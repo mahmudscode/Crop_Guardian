@@ -7,3 +7,4 @@ chroma/
 .DS_Store
 dist/
 docs/raw/*.pdf
+supabase/.temp/
