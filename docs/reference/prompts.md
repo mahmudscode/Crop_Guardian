@@ -5,7 +5,7 @@ created: 2026-11-20
 updated: 2026-11-20
 sources:
   - code: supabase/functions/diagnose/index.ts
-verified_at: 4d9c993
+verified_at: 76d2379
 ---
 
 # Prompts

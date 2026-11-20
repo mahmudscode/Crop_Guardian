@@ -7,7 +7,7 @@ sources:
   - code: supabase/functions/diagnose/index.ts
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
-verified_at: 4d9c993
+verified_at: 76d2379
 ---
 
 # System architecture
