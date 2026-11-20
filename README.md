@@ -6,6 +6,8 @@ Built for the International AI Builders Congress (AIBC) 2026, AgriSphere AI chal
 
 **Live app:** https://crop-guardian-ten.vercel.app (free Vercel hosting; the backend runs on free Supabase and Gemini tiers, so it can be slow or say "server busy" when Google's free models are overloaded).
 
+**Full write-up:** [`PROJECT_REPORT.md`](PROJECT_REPORT.md) (problem, architecture, build story, measured results, limitations).
+
 > **New here (teammate, judge, or AI assistant)? Read [`docs/concepts/project-guide.md`](docs/concepts/project-guide.md) first.** It covers what the project is, current status, how it works, how to run it, and the rules for changing it.
 
 ## What it does
