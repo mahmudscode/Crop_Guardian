@@ -9,12 +9,13 @@ Deno.serve(async (req) => {
     return new Response("forbidden", { status: 403, headers: corsHeaders });
   }
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const { data: cards, error } = await db.from("disease_cards").select("*").is("embedding", null);
+  const { data: cards, error } = await db.from("disease_cards").select("*").is("embedding", null).not("symptoms_en", "is", null).limit(3); // 3 per call: Voyage free limit is 3 requests/min; call again until embedded=0
   if (error) return new Response(error.message, { status: 500, headers: corsHeaders });
 
   let done = 0;
   for (const c of cards ?? []) {
     const text = [c.disease_name_en, c.disease_name_bn, c.symptoms_en, c.symptoms_bn].filter(Boolean).join("\n");
+    if (done > 0) await new Promise((r) => setTimeout(r, 21_000));
     const vec = await embed(text, "document");
     const { error: e } = await db.from("disease_cards").update({ embedding: vec }).eq("id", c.id);
     if (e) return new Response(e.message, { status: 500, headers: corsHeaders });
