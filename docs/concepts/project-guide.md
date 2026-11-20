@@ -10,7 +10,7 @@ sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/App.jsx
   - code: eval/score.py
-verified_at: 4d9c993
+verified_at: 2968829
 ---
 
 # Crop Guardian: project guide

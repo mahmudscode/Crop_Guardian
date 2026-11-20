@@ -7,7 +7,7 @@ sources:
   - code: supabase/config.toml
   - code: .env.example
   - code: app/.env.example
-verified_at: 4d9c993
+verified_at: 2968829
 ---
 
 # Setup: Supabase and the web app
