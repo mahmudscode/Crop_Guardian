@@ -9,3 +9,6 @@ chroma/
 dist/
 docs/raw/*.pdf
 supabase/.temp/
+
+# demo video output (large, regenerate with video/tools)
+video/*.mp4

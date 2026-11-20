@@ -76,6 +76,7 @@ supabase/
   functions/_shared/        Gemini helpers (generate, embed), CORS
   config.toml               function settings
 eval/                       scripts and saved results for the photo comparison (no photos committed)
+video/                      the 180 s demo video text map (VIDEO_MAP.md) and the tools that record and assemble the video (the mp4 itself is not committed)
 docs/                       wiki (this guide, architecture, prompts, evaluation, setup, ...) - start at docs/index.md
   source-material/          the hackathon requirement PDFs
 .env.example, app/.env.example   names of required variables (no values)

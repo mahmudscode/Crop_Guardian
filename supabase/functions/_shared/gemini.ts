@@ -41,8 +41,15 @@ function modelChain(): string[] {
   return [primary, ...fallbacks];
 }
 
+// Cool-down: a model that just failed (busy, quota, closed or timed out) is skipped for 2 minutes by this function instance,
+// so one overloaded model does not add its 25 s timeout to every request. If every model is cooling down, all are tried.
+const COOL_MS = 120_000;
+const coolUntil = new Map<string, number>();
+
 export async function generateWithModel(parts: Part[], opts: { json?: boolean; maxTokens?: number } = {}): Promise<{ text: string; model: string }> {
-  const chain = modelChain();
+  const all = modelChain();
+  const ready = all.filter((m) => (coolUntil.get(m) ?? 0) <= Date.now());
+  const chain = ready.length ? ready : all;
   let lastBusy: GeminiBusyError | null = null;
   for (let i = 0; i < chain.length; i++) {
     const model = chain[i];
@@ -61,7 +68,7 @@ export async function generateWithModel(parts: Part[], opts: { json?: boolean; m
       if (!text) throw new Error("gemini returned no text");
       return { text, model };
     } catch (e) {
-      if (e instanceof GeminiBusyError) { lastBusy = e; continue; }
+      if (e instanceof GeminiBusyError) { lastBusy = e; coolUntil.set(model, Date.now() + COOL_MS); continue; }
       throw e;
     }
   }

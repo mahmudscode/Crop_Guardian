@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0}
+  body{width:1280px;height:720px;font-family:"DejaVu Sans","Noto Sans",sans-serif;background:linear-gradient(135deg,#f0fdf4,#dcfce7);overflow:hidden;position:relative}
+  .left{position:absolute;left:70px;top:0;bottom:0;width:640px;display:flex;flex-direction:column;justify-content:center}
+  .brand{position:absolute;left:70px;top:36px;font-size:20px;font-weight:700;color:#15803d;letter-spacing:1px}
+  .title{font-size:50px;line-height:1.15;font-weight:800;color:#14532d}
+  .text{font-size:27px;line-height:1.45;margin-top:22px;color:#1f3d2b}
+  .note{margin-top:28px;font-size:20px;line-height:1.4;background:#fff;border-left:8px solid #f59e0b;padding:12px 16px;color:#3b2f05;display:none}
+  .phone{position:absolute;right:90px;top:14px;width:440px;height:692px;border-radius:44px;background:#111;padding:14px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+  iframe{width:412px;height:664px;border:0;border-radius:32px;background:#f0fdf4}
+  .badge{position:absolute;right:104px;top:28px;background:#f59e0b;color:#fff;font-weight:800;font-size:18px;padding:6px 14px;border-radius:999px;display:none;z-index:5}
+  #tick{position:absolute;left:0;top:0;width:2px;height:2px;background:#f0fdf4;animation:tick .1s linear infinite alternate}
+  @keyframes tick{from{opacity:.05}to{opacity:1}}
+</style>
+<div id="tick"></div>
+<div class="brand">CROP GUARDIAN &middot; LIVE DEMO</div>
+<div class="left">
+  <div class="title" id="title"></div>
+  <div class="text" id="text"></div>
+  <div class="note" id="note"></div>
+</div>
+<div class="badge" id="badge">SPED UP</div>
+<div class="phone"><iframe id="app" src="http://localhost:5173/"></iframe></div>
+<script>
+  window.setCaption = (title, text, note, sped) => {
+    document.getElementById("title").textContent = title || "";
+    document.getElementById("text").textContent = text || "";
+    const n = document.getElementById("note"); n.textContent = note || ""; n.style.display = note ? "block" : "none";
+    document.getElementById("badge").style.display = sped ? "block" : "none";
+  };
+</script>
