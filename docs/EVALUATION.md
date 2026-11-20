@@ -35,3 +35,17 @@ Labels come from Wikimedia Commons file names (crowd-sourced, unverified); n is 
 | Rice plants affected by tungro disease1 | tungro | "not sure", refer to officer (missed) | n/a |
 | Non-rice stripes image | not rice | "send another photo" | n/a |
 | Corrupt file (UI) | not an image | "image could not be read" | n/a |
+
+## Comparison on 42 public photos (2026-11-20) - informal, NOT the KPI
+Set: 6 photos per class from `Project-AgML/rice_disease_classification_bangladesh` (CC BY 4.0), classes blast, tungro, healthy, plus insect, leaf scald, leaffolder, stripes (no card, so the right answer is "not sure"). Photos are single leaves on a white background, so they are easier and different from phone field photos. n is tiny; dataset labels are not independently verified. Scripts and raw results: `eval/`.
+
+| Method | Blast+tungro right (of 12) | Healthy not flagged (of 6) | No-card refused (of 24) | Answers shown | Wrong answers shown |
+|---|---|---|---|---|---|
+| Gemini pipeline (deployed, `gemini-3.1-flash-lite`) | 5 | 4 | 1 | 35 | 30 |
+| Classifier alone (`Huyt/...efficientnet-b0`) | 2 | 6 | 13 | 18 | 16 |
+| Classifier, confidence >= 0.5 | 1 | 6 | 19 | 8 | 7 |
+| Both must agree | 1 | 6 | 23 | 3 | 2 |
+
+Gemini response time: median 7.0 s, max 28.5 s (n=42).
+
+What it shows: the deployed pipeline names one of our diseases for almost every leaf (35 of 42), including 23 of 24 photos of problems we have no card for, and its confidence (0.6-0.95) does not separate right from wrong. The pretrained classifier is weak on these photos (domain shift; its card's 97% is on its own split) but does say "healthy" correctly. Requiring both to agree is safe but almost never answers.

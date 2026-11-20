@@ -1,0 +1,849 @@
+[
+ {
+  "file": "blast/01.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.9,
+  "secs": 6.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.9
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "blast/02.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.85,
+  "secs": 4.9,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.6
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "blast/03.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.85,
+  "secs": 7.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "blast/04.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.85,
+  "secs": 13.5,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "blast/05.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.85,
+  "secs": 5.3,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Tungro",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "blast/06.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.85,
+  "secs": 7.5,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "healthy/01.jpg",
+  "true": "healthy",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.75,
+  "secs": 4.4,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.75
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "healthy/02.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 5.0,
+  "cands": [],
+  "detail": null
+ },
+ {
+  "file": "healthy/03.jpg",
+  "true": "healthy",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.6,
+  "secs": 9.8,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   },
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.1
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "healthy/04.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 14.7,
+  "cands": [],
+  "detail": null
+ },
+ {
+  "file": "healthy/05.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 6.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "healthy/06.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/01.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.9,
+  "secs": 7.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.9
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/02.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.6,
+  "secs": 12.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/03.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.6,
+  "secs": 15.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/04.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.6,
+  "secs": 6.9,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.5
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/05.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.95,
+  "secs": 8.4,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.95
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.2
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.1
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "insect/06.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.7,
+  "secs": 7.4,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/01.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.75,
+  "secs": 6.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.75
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/02.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.7,
+  "secs": 9.9,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/03.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.85,
+  "secs": 7.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/04.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.6,
+  "secs": 5.3,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/05.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.7,
+  "secs": 28.5,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaf_scald/06.jpg",
+  "true": "leaf_scald",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.6,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.2
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/01.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Sheath blight",
+  "conf": 0.85,
+  "secs": 5.2,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/02.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Sheath blight",
+  "conf": 0.6,
+  "secs": 7.3,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/03.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.85,
+  "secs": 7.0,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/04.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Sheath blight",
+  "conf": 0.85,
+  "secs": 7.9,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.2
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/05.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.75,
+  "secs": 5.2,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.75
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "leaffolder/06.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.9,
+  "secs": 7.5,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.9
+   },
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.2
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.1
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/01.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.7,
+  "secs": 7.5,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/02.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.7,
+  "secs": 6.6,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Sheath blight",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/03.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.75,
+  "secs": 8.4,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.75
+   },
+   {
+    "name_en": "Tungro",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/04.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.85,
+  "secs": 4.5,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/05.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Tungro",
+  "conf": 0.75,
+  "secs": 4.9,
+  "cands": [
+   {
+    "name_en": "Tungro",
+    "confidence": 0.75
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "stripes/06.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.85,
+  "secs": 4.3,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.85
+   },
+   {
+    "name_en": "Tungro",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "tungro/01.jpg",
+  "true": "tungro",
+  "status": "ok",
+  "disease": "Tungro",
+  "conf": 0.7,
+  "secs": 7.6,
+  "cands": [
+   {
+    "name_en": "Tungro",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "tungro/02.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.5,
+  "cands": [],
+  "detail": null
+ },
+ {
+  "file": "tungro/03.jpg",
+  "true": "tungro",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.7,
+  "secs": 7.4,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "confidence": 0.7
+   },
+   {
+    "name_en": "Brown spot",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "tungro/04.jpg",
+  "true": "tungro",
+  "status": "ok",
+  "disease": "Tungro",
+  "conf": 0.6,
+  "secs": 5.5,
+  "cands": [
+   {
+    "name_en": "Tungro",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.5
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "tungro/05.jpg",
+  "true": "tungro",
+  "status": "ok",
+  "disease": "Tungro",
+  "conf": 0.6,
+  "secs": 11.0,
+  "cands": [
+   {
+    "name_en": "Tungro",
+    "confidence": 0.6
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.4
+   }
+  ],
+  "detail": null
+ },
+ {
+  "file": "tungro/06.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.6,
+  "cands": [
+   {
+    "name_en": "Tungro",
+    "confidence": 0.4
+   },
+   {
+    "name_en": "Bacterial leaf blight",
+    "confidence": 0.3
+   },
+   {
+    "name_en": "Blast",
+    "confidence": 0.2
+   }
+  ],
+  "detail": null
+ }
+]

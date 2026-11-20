@@ -68,7 +68,9 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   const t0 = Date.now();
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim();
-  if (limited(ip)) return json({ status: "rate_limited", message_bn: LIMIT_MSG_BN }, 429);
+  // The ADMIN_KEY header skips the per-IP limit so the evaluation script can run its photo set.
+  const isAdmin = !!Deno.env.get("ADMIN_KEY") && req.headers.get("x-admin-key") === Deno.env.get("ADMIN_KEY");
+  if (!isAdmin && limited(ip)) return json({ status: "rate_limited", message_bn: LIMIT_MSG_BN }, 429);
   try {
     const { image_base64, media_type } = await req.json();
     if (!image_base64 || !["image/jpeg", "image/png", "image/webp"].includes(media_type)) {

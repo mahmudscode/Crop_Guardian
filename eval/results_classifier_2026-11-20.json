@@ -1,0 +1,842 @@
+[
+ {
+  "file": "blast/01.jpg",
+  "true": "blast",
+  "pred": "Leaf Blast",
+  "conf": 0.923,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.923
+   ],
+   [
+    "Brown Spot",
+    0.025
+   ],
+   [
+    "Leaf Scald",
+    0.011
+   ]
+  ]
+ },
+ {
+  "file": "blast/02.jpg",
+  "true": "blast",
+  "pred": "Brown Spot",
+  "conf": 0.584,
+  "top3": [
+   [
+    "Brown Spot",
+    0.584
+   ],
+   [
+    "Leaf Blast",
+    0.203
+   ],
+   [
+    "Healthy",
+    0.095
+   ]
+  ]
+ },
+ {
+  "file": "blast/03.jpg",
+  "true": "blast",
+  "pred": "Bacterial Blight",
+  "conf": 0.593,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.593
+   ],
+   [
+    "Narrow Brown Spot",
+    0.216
+   ],
+   [
+    "Sheath Rot",
+    0.024
+   ]
+  ]
+ },
+ {
+  "file": "blast/04.jpg",
+  "true": "blast",
+  "pred": "Healthy",
+  "conf": 0.2,
+  "top3": [
+   [
+    "Healthy",
+    0.2
+   ],
+   [
+    "Narrow Brown Spot",
+    0.167
+   ],
+   [
+    "Hispa",
+    0.165
+   ]
+  ]
+ },
+ {
+  "file": "blast/05.jpg",
+  "true": "blast",
+  "pred": "Narrow Brown Spot",
+  "conf": 0.862,
+  "top3": [
+   [
+    "Narrow Brown Spot",
+    0.862
+   ],
+   [
+    "Leaf Blast",
+    0.017
+   ],
+   [
+    "Brown Spot",
+    0.016
+   ]
+  ]
+ },
+ {
+  "file": "blast/06.jpg",
+  "true": "blast",
+  "pred": "Narrow Brown Spot",
+  "conf": 0.475,
+  "top3": [
+   [
+    "Narrow Brown Spot",
+    0.475
+   ],
+   [
+    "Leaf Blast",
+    0.136
+   ],
+   [
+    "Leaf Scald",
+    0.076
+   ]
+  ]
+ },
+ {
+  "file": "healthy/01.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.427,
+  "top3": [
+   [
+    "Healthy",
+    0.427
+   ],
+   [
+    "Hispa",
+    0.167
+   ],
+   [
+    "Brown Spot",
+    0.147
+   ]
+  ]
+ },
+ {
+  "file": "healthy/02.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.831,
+  "top3": [
+   [
+    "Healthy",
+    0.831
+   ],
+   [
+    "Hispa",
+    0.052
+   ],
+   [
+    "Brown Spot",
+    0.027
+   ]
+  ]
+ },
+ {
+  "file": "healthy/03.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.49,
+  "top3": [
+   [
+    "Healthy",
+    0.49
+   ],
+   [
+    "Brown Spot",
+    0.252
+   ],
+   [
+    "Hispa",
+    0.083
+   ]
+  ]
+ },
+ {
+  "file": "healthy/04.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.559,
+  "top3": [
+   [
+    "Healthy",
+    0.559
+   ],
+   [
+    "Hispa",
+    0.247
+   ],
+   [
+    "Narrow Brown Spot",
+    0.044
+   ]
+  ]
+ },
+ {
+  "file": "healthy/05.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.365,
+  "top3": [
+   [
+    "Healthy",
+    0.365
+   ],
+   [
+    "Narrow Brown Spot",
+    0.141
+   ],
+   [
+    "Hispa",
+    0.122
+   ]
+  ]
+ },
+ {
+  "file": "healthy/06.jpg",
+  "true": "healthy",
+  "pred": "Healthy",
+  "conf": 0.624,
+  "top3": [
+   [
+    "Healthy",
+    0.624
+   ],
+   [
+    "Hispa",
+    0.124
+   ],
+   [
+    "Narrow Brown Spot",
+    0.044
+   ]
+  ]
+ },
+ {
+  "file": "insect/01.jpg",
+  "true": "insect",
+  "pred": "Narrow Brown Spot",
+  "conf": 0.484,
+  "top3": [
+   [
+    "Narrow Brown Spot",
+    0.484
+   ],
+   [
+    "Leaf Scald",
+    0.152
+   ],
+   [
+    "Stem Rot",
+    0.055
+   ]
+  ]
+ },
+ {
+  "file": "insect/02.jpg",
+  "true": "insect",
+  "pred": "Bacterial Blight",
+  "conf": 0.265,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.265
+   ],
+   [
+    "Healthy",
+    0.216
+   ],
+   [
+    "Leaf Scald",
+    0.097
+   ]
+  ]
+ },
+ {
+  "file": "insect/03.jpg",
+  "true": "insect",
+  "pred": "Leaf Blast",
+  "conf": 0.672,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.672
+   ],
+   [
+    "Brown Spot",
+    0.219
+   ],
+   [
+    "Bacterial Streak",
+    0.02
+   ]
+  ]
+ },
+ {
+  "file": "insect/04.jpg",
+  "true": "insect",
+  "pred": "Healthy",
+  "conf": 0.539,
+  "top3": [
+   [
+    "Healthy",
+    0.539
+   ],
+   [
+    "Brown Spot",
+    0.107
+   ],
+   [
+    "Hispa",
+    0.049
+   ]
+  ]
+ },
+ {
+  "file": "insect/05.jpg",
+  "true": "insect",
+  "pred": "Healthy",
+  "conf": 0.48,
+  "top3": [
+   [
+    "Healthy",
+    0.48
+   ],
+   [
+    "Brown Spot",
+    0.17
+   ],
+   [
+    "Leaf Blast",
+    0.123
+   ]
+  ]
+ },
+ {
+  "file": "insect/06.jpg",
+  "true": "insect",
+  "pred": "Leaf Blast",
+  "conf": 0.756,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.756
+   ],
+   [
+    "Hispa",
+    0.079
+   ],
+   [
+    "Brown Spot",
+    0.057
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/01.jpg",
+  "true": "leaf_scald",
+  "pred": "Healthy",
+  "conf": 0.325,
+  "top3": [
+   [
+    "Healthy",
+    0.325
+   ],
+   [
+    "Leaf Blast",
+    0.188
+   ],
+   [
+    "Brown Spot",
+    0.117
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/02.jpg",
+  "true": "leaf_scald",
+  "pred": "Leaf Scald",
+  "conf": 0.704,
+  "top3": [
+   [
+    "Leaf Scald",
+    0.704
+   ],
+   [
+    "Tungro",
+    0.077
+   ],
+   [
+    "Bacterial Blight",
+    0.072
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/03.jpg",
+  "true": "leaf_scald",
+  "pred": "Brown Spot",
+  "conf": 0.28,
+  "top3": [
+   [
+    "Brown Spot",
+    0.28
+   ],
+   [
+    "Narrow Brown Spot",
+    0.207
+   ],
+   [
+    "Leaf Scald",
+    0.143
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/04.jpg",
+  "true": "leaf_scald",
+  "pred": "Healthy",
+  "conf": 0.799,
+  "top3": [
+   [
+    "Healthy",
+    0.799
+   ],
+   [
+    "Brown Spot",
+    0.056
+   ],
+   [
+    "Narrow Brown Spot",
+    0.028
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/05.jpg",
+  "true": "leaf_scald",
+  "pred": "Brown Spot",
+  "conf": 0.454,
+  "top3": [
+   [
+    "Brown Spot",
+    0.454
+   ],
+   [
+    "Leaf Blast",
+    0.416
+   ],
+   [
+    "Healthy",
+    0.034
+   ]
+  ]
+ },
+ {
+  "file": "leaf_scald/06.jpg",
+  "true": "leaf_scald",
+  "pred": "Leaf Scald",
+  "conf": 0.797,
+  "top3": [
+   [
+    "Leaf Scald",
+    0.797
+   ],
+   [
+    "Brown Spot",
+    0.041
+   ],
+   [
+    "Bakanae",
+    0.033
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/01.jpg",
+  "true": "leaffolder",
+  "pred": "Leaf Blast",
+  "conf": 0.405,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.405
+   ],
+   [
+    "Brown Spot",
+    0.125
+   ],
+   [
+    "Neck Blast",
+    0.07
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/02.jpg",
+  "true": "leaffolder",
+  "pred": "Hispa",
+  "conf": 0.811,
+  "top3": [
+   [
+    "Hispa",
+    0.811
+   ],
+   [
+    "Leaf Scald",
+    0.047
+   ],
+   [
+    "Healthy",
+    0.027
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/03.jpg",
+  "true": "leaffolder",
+  "pred": "Leaf Scald",
+  "conf": 0.612,
+  "top3": [
+   [
+    "Leaf Scald",
+    0.612
+   ],
+   [
+    "Bacterial Blight",
+    0.167
+   ],
+   [
+    "Ragged Stunt Virus",
+    0.037
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/04.jpg",
+  "true": "leaffolder",
+  "pred": "Narrow Brown Spot",
+  "conf": 0.431,
+  "top3": [
+   [
+    "Narrow Brown Spot",
+    0.431
+   ],
+   [
+    "Bacterial Blight",
+    0.34
+   ],
+   [
+    "Healthy",
+    0.048
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/05.jpg",
+  "true": "leaffolder",
+  "pred": "Bacterial Blight",
+  "conf": 0.872,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.872
+   ],
+   [
+    "Healthy",
+    0.016
+   ],
+   [
+    "Narrow Brown Spot",
+    0.015
+   ]
+  ]
+ },
+ {
+  "file": "leaffolder/06.jpg",
+  "true": "leaffolder",
+  "pred": "Healthy",
+  "conf": 0.361,
+  "top3": [
+   [
+    "Healthy",
+    0.361
+   ],
+   [
+    "Brown Spot",
+    0.203
+   ],
+   [
+    "Leaf Blast",
+    0.084
+   ]
+  ]
+ },
+ {
+  "file": "stripes/01.jpg",
+  "true": "stripes",
+  "pred": "Leaf Blast",
+  "conf": 0.613,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.613
+   ],
+   [
+    "Bacterial Blight",
+    0.2
+   ],
+   [
+    "Narrow Brown Spot",
+    0.063
+   ]
+  ]
+ },
+ {
+  "file": "stripes/02.jpg",
+  "true": "stripes",
+  "pred": "Narrow Brown Spot",
+  "conf": 0.694,
+  "top3": [
+   [
+    "Narrow Brown Spot",
+    0.694
+   ],
+   [
+    "Tungro",
+    0.096
+   ],
+   [
+    "Hispa",
+    0.024
+   ]
+  ]
+ },
+ {
+  "file": "stripes/03.jpg",
+  "true": "stripes",
+  "pred": "Brown Spot",
+  "conf": 0.539,
+  "top3": [
+   [
+    "Brown Spot",
+    0.539
+   ],
+   [
+    "Healthy",
+    0.078
+   ],
+   [
+    "Bacterial Blight",
+    0.073
+   ]
+  ]
+ },
+ {
+  "file": "stripes/04.jpg",
+  "true": "stripes",
+  "pred": "Leaf Blast",
+  "conf": 0.411,
+  "top3": [
+   [
+    "Leaf Blast",
+    0.411
+   ],
+   [
+    "Brown Spot",
+    0.097
+   ],
+   [
+    "Grassy Stunt Virus",
+    0.088
+   ]
+  ]
+ },
+ {
+  "file": "stripes/05.jpg",
+  "true": "stripes",
+  "pred": "Bacterial Blight",
+  "conf": 0.441,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.441
+   ],
+   [
+    "Narrow Brown Spot",
+    0.356
+   ],
+   [
+    "Healthy",
+    0.04
+   ]
+  ]
+ },
+ {
+  "file": "stripes/06.jpg",
+  "true": "stripes",
+  "pred": "Healthy",
+  "conf": 0.69,
+  "top3": [
+   [
+    "Healthy",
+    0.69
+   ],
+   [
+    "Brown Spot",
+    0.081
+   ],
+   [
+    "Leaf Blast",
+    0.08
+   ]
+  ]
+ },
+ {
+  "file": "tungro/01.jpg",
+  "true": "tungro",
+  "pred": "Bacterial Blight",
+  "conf": 0.425,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.425
+   ],
+   [
+    "Healthy",
+    0.371
+   ],
+   [
+    "Narrow Brown Spot",
+    0.047
+   ]
+  ]
+ },
+ {
+  "file": "tungro/02.jpg",
+  "true": "tungro",
+  "pred": "Healthy",
+  "conf": 0.675,
+  "top3": [
+   [
+    "Healthy",
+    0.675
+   ],
+   [
+    "Narrow Brown Spot",
+    0.106
+   ],
+   [
+    "Bacterial Blight",
+    0.041
+   ]
+  ]
+ },
+ {
+  "file": "tungro/03.jpg",
+  "true": "tungro",
+  "pred": "Brown Spot",
+  "conf": 0.419,
+  "top3": [
+   [
+    "Brown Spot",
+    0.419
+   ],
+   [
+    "Leaf Blast",
+    0.25
+   ],
+   [
+    "Bacterial Blight",
+    0.102
+   ]
+  ]
+ },
+ {
+  "file": "tungro/04.jpg",
+  "true": "tungro",
+  "pred": "Healthy",
+  "conf": 0.545,
+  "top3": [
+   [
+    "Healthy",
+    0.545
+   ],
+   [
+    "Brown Spot",
+    0.135
+   ],
+   [
+    "Leaf Blast",
+    0.127
+   ]
+  ]
+ },
+ {
+  "file": "tungro/05.jpg",
+  "true": "tungro",
+  "pred": "Tungro",
+  "conf": 0.217,
+  "top3": [
+   [
+    "Tungro",
+    0.217
+   ],
+   [
+    "Hispa",
+    0.142
+   ],
+   [
+    "Leaf Scald",
+    0.132
+   ]
+  ]
+ },
+ {
+  "file": "tungro/06.jpg",
+  "true": "tungro",
+  "pred": "Bacterial Blight",
+  "conf": 0.444,
+  "top3": [
+   [
+    "Bacterial Blight",
+    0.444
+   ],
+   [
+    "Brown Spot",
+    0.212
+   ],
+   [
+    "Healthy",
+    0.141
+   ]
+  ]
+ }
+]
