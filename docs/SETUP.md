@@ -12,7 +12,7 @@
    ```bash
    supabase secrets set --env-file .env
    ```
-   Needs an Anthropic API key and a Voyage AI key (or swap `supabase/functions/_shared/embed.ts` for Cohere embed-multilingual; keep the vector size equal to `vector(1024)` in the migration).
+   Needs one free Gemini API key from https://aistudio.google.com/apikey (no billing). Keep embedding size equal to `vector(1024)` in the migration (`supabase/functions/_shared/gemini.ts`).
 4. Deploy functions:
    ```bash
    supabase functions deploy diagnose
@@ -49,4 +49,4 @@ Then follow [EVALUATION.md](EVALUATION.md) and tune `CONF_THRESHOLD` and `SIM_TH
 
 ## Notes
 - `diagnose` has `verify_jwt = false` for the no-account demo. Add rate limiting before any public launch to protect API spend.
-- Confirm current model names for Claude and the embedding provider before deploying.
+- Confirm current Gemini model names, and the free-tier rate limits, before deploying.

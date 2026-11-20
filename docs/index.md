@@ -1,6 +1,6 @@
 # Crop Guardian -- documentation
 
-Crop Guardian: Bangla rice-disease diagnosis from a leaf photo, grounded by RAG over cited disease cards (Supabase + Claude + React).
+Crop Guardian: Bangla rice-disease diagnosis from a leaf photo, grounded by RAG over cited disease cards (Supabase + Gemini + React).
 
 This directory is a wiki maintained by an LLM: linked markdown pages, nothing outside the
 repository. The rules are in [`CLAUDE.md`](CLAUDE.md).

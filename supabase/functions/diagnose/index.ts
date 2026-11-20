@@ -2,9 +2,8 @@
 // The photo is processed in memory only and never stored.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
-import { embed } from "../_shared/embed.ts";
+import { embed, generate, type Part } from "../_shared/gemini.ts";
 
-const MODEL = Deno.env.get("ANTHROPIC_MODEL") ?? "claude-sonnet-5-5";
 const CONF_THRESHOLD = Number(Deno.env.get("CONF_THRESHOLD") ?? "0.5"); // tune on test set
 const SIM_THRESHOLD = Number(Deno.env.get("SIM_THRESHOLD") ?? "0.3");   // tune on test set
 
@@ -18,21 +17,6 @@ Use ONLY the disease cards below. If they do not cover the case,
 say you are not sure and advise contacting the local agriculture officer.
 Format: 1) likely disease 2) what to do now 3) how to prevent it
 4) source name. Never invent a pesticide name or dose.`;
-
-async function claude(content: unknown, system?: string, maxTokens = 1200): Promise<string> {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "x-api-key": Deno.env.get("ANTHROPIC_API_KEY")!,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, system, messages: [{ role: "user", content }] }),
-  });
-  if (!res.ok) throw new Error(`claude ${res.status}`);
-  const j = await res.json();
-  return j.content.filter((b: { type: string }) => b.type === "text").map((b: { text: string }) => b.text).join("");
-}
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -51,11 +35,9 @@ Deno.serve(async (req) => {
     if (image_base64.length > 7_000_000) return json({ status: "too_large", message_bn: RETRY_MSG_BN }, 413);
 
     // 1. Observe
-    const raw = await claude(
-      [
-        { type: "image", source: { type: "base64", media_type, data: image_base64 } },
-        { type: "text", text: VISION_PROMPT },
-      ],
+    const raw = await generate(
+      [{ inline_data: { mime_type: media_type, data: image_base64 } }, { text: VISION_PROMPT }] as Part[],
+      { json: true },
     );
     const obs = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1));
     const top = [...(obs.candidates ?? [])].sort((a, b) => b.confidence - a.confidence)[0];
@@ -80,9 +62,9 @@ Deno.serve(async (req) => {
     }
 
     // 3. Answer (grounded)
-    const answer = await claude(
-      `${ANSWER_PROMPT}\n\n[disease cards]\n${JSON.stringify(cards)}\n\n[symptom JSON]\n${JSON.stringify(obs)}`,
-    );
+    const answer = await generate([
+      { text: `${ANSWER_PROMPT}\n\n[disease cards]\n${JSON.stringify(cards)}\n\n[symptom JSON]\n${JSON.stringify(obs)}` },
+    ]);
     return json({
       status: "ok",
       answer_bn: answer,

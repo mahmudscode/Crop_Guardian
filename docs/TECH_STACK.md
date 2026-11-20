@@ -6,8 +6,8 @@ Follows the Congress reference architecture (React UI, Supabase backend with pgv
 |---|---|---|
 | UI | React + Vite + Tailwind (hand-built in `app/`), mobile-first, Bangla UI strings | Simple single page; full control and version history in this repo. The guide suggests Lovable but tool choice does not affect scoring |
 | Backend / API | Supabase Edge Functions | Keeps API keys server-side; one place for the pipeline |
-| Vision + reasoning | Claude (vision-capable model) via Anthropic API | Reads leaf photos and writes Bangla; no custom model training |
-| Embeddings | Multilingual embedding model (Voyage multilingual or Cohere embed-multilingual; confirm current model name) | Must match Bangla and English queries to cards |
+| Vision + reasoning | Google Gemini (`gemini-2.5-flash`, confirm current name) via the free-tier Gemini API | Reads leaf photos and writes Bangla; free tier means no billing; no custom model training |
+| Embeddings | Gemini `gemini-embedding-001` at 1024 dims (free tier; confirm current model name) | Must match Bangla and English queries to cards |
 | Vector store | Supabase Postgres + pgvector | Same database as app data; guide-recommended |
 | Knowledge base | 6 to 30 disease cards from BRRI, DAE, IRRI, FAO sources | Small, verified, cited; quality beats volume |
 | Image storage | None by default (photo processed in memory) | Privacy and data sovereignty |
@@ -17,4 +17,4 @@ Follows the Congress reference architecture (React UI, Supabase backend with pgv
 Rows are defaults; swap any if the team already knows another tool. If a tool other than the guide's suggestions is used, record the tool name, URL, and reason.
 
 ## Secrets
-Anthropic and embedding API keys live only in Supabase Edge Function secrets. Never commit keys; use `.env` locally (git-ignored).
+The Gemini API key lives only in Supabase Edge Function secrets. Never commit keys; use `.env` locally (git-ignored).

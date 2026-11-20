@@ -17,9 +17,9 @@ Built for the International AI Builders Congress 2026 (AIBC), AgriSphere AI chal
 ## Pipeline
 
 ```
-Photo -> Edge Function (in memory) -> Claude vision (symptom JSON)
+Photo -> Edge Function (in memory) -> Gemini vision (symptom JSON)
       -> embed symptoms -> pgvector top 3-5 disease cards
-      -> Claude answer in Bangla (cards only) -> diagnosis + source + confidence
+      -> Gemini answer in Bangla (cards only) -> diagnosis + source + confidence
 ```
 
 Low confidence or no matching card: the app asks for another photo and refers the farmer to the local agriculture officer.

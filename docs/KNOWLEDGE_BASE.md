@@ -41,7 +41,7 @@ create table disease_cards (
 BRRI Rice Knowledge Bank and Bangla leaflets, DAE guides, IRRI Rice Knowledge Bank, FAO and CABI PlantWise pest guides. Check each site's terms before copying. URLs are unverified; confirm before use.
 
 ## Rules for building cards
-- Claude may reformat source text into the schema but must not add treatments or doses the source does not state
+- The AI may reformat source text into the schema but must not add treatments or doses the source does not state
 - A teammate checks every card against its source before it is loaded
 - Pesticide names and doses are copied exactly or left out; never paraphrased from memory
 - Every card has `source_name` (and URL/page where available)

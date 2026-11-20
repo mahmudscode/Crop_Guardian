@@ -11,4 +11,4 @@ Bangla rice-disease diagnosis from a leaf photo, grounded by RAG over cited dise
 - Prompts in [docs/PROMPTS.md](docs/PROMPTS.md) are the source of truth; re-run evaluation after changing them.
 
 ## Stack
-React + Vite + Tailwind UI (`app/`), Supabase Edge Functions, Claude vision, multilingual embeddings, Supabase Postgres + pgvector. Fallback: FastAPI/Streamlit + Chroma.
+React + Vite + Tailwind UI (`app/`), Supabase Edge Functions, Google Gemini (free tier) for vision, answers and multilingual embeddings, Supabase Postgres + pgvector. Fallback: FastAPI/Streamlit + Chroma.

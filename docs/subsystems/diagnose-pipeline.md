@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: supabase/functions/diagnose/index.ts
   - code: supabase/functions/embed-cards/index.ts
-  - code: supabase/functions/_shared/embed.ts
+  - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
 verified_at: 849639a
@@ -14,7 +14,7 @@ verified_at: 849639a
 
 # Diagnose pipeline
 
-The `diagnose` Edge Function turns one leaf photo into a Bangla answer in three steps: observe (Claude vision returns symptom JSON), retrieve (embed symptoms, call `match_disease_cards` in pgvector), answer (Claude writes Bangla from the retrieved cards only). The web app calls it from `app/src/api.js` after downscaling the image to 1024px JPEG.
+The `diagnose` Edge Function turns one leaf photo into a Bangla answer in three steps: observe (Gemini vision returns symptom JSON), retrieve (embed symptoms, call `match_disease_cards` in pgvector), answer (Claude writes Bangla from the retrieved cards only). The web app calls it from `app/src/api.js` after downscaling the image to 1024px JPEG.
 
 Response `status` values: `ok`, `retry_photo` (not rice or poor photo), `low_confidence`, `no_card`, `bad_request`, `too_large`, `error`. All non-`ok` statuses carry `message_bn` and the UI shows a retry button plus an officer-contact card.
 
@@ -22,7 +22,7 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 
 > ⚠️ Only cards with `verified = true` AND a non-null `embedding` are ever retrieved (`match_disease_cards`, RLS policy). Until the six cards are source-checked, verified and embedded via `embed-cards`, every request ends in `no_card`. That is intended, not a bug.
 
-> ⚠️ `vector(1024)` in the migration must equal the embedding model's output size (`_shared/embed.ts`, default `voyage-multilingual-2`, unconfirmed). Changing the model or dimension means altering the column and re-embedding every card (set `embedding = null`, rerun `embed-cards`).
+> ⚠️ `vector(1024)` in the migration must equal the embedding size (`supabase/functions/_shared/gemini.ts`, `EMBED_DIMS`, model `gemini-embedding-001`, vectors re-normalised because truncated dimensions are not unit length). Changing the model or dimension means altering the column and re-embedding every card (set `embedding = null`, rerun `embed-cards`). Embeddings from different models are not comparable, so never mix them.
 
 > ⚠️ `CONF_THRESHOLD` (0.5) and `SIM_THRESHOLD` (0.3) are placeholders, not measured values. Tune them on the labelled test set before quoting any result.
 
@@ -32,4 +32,4 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 
 > ⚠️ `diagnose` has `verify_jwt = false` (`supabase/config.toml`) for the no-account demo, so anyone with the URL can spend API credit. Add rate limiting before a public launch. `embed-cards` is guarded by the `x-admin-key` header instead.
 
-> ⚠️ A Voyage account with no payment method is limited to 3 requests per minute (HTTP 429). `embed-cards` therefore embeds at most 3 cards per call, pausing 21 s between them (`supabase/functions/embed-cards/index.ts`); call it repeatedly until it returns `embedded: 0`. `diagnose` also embeds once per request (`supabase/functions/_shared/embed.ts` retries after 21 s), so under that limit a demo can stall. Add a payment method on Voyage before recording.
+> ⚠️ Gemini free-tier calls can return HTTP 429 when rate limited; `_shared/gemini.ts` retries twice after 15 s. The free tier has request and daily limits (unverified, check Google's page), so rate-limit `diagnose` and avoid stress-testing before the demo.
