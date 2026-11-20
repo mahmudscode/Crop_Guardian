@@ -1,5 +1,6 @@
 {
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
-  "deno.unstable": false
+  "deno.unstable": false,
+  "python.terminal.useEnvFile": true
 }
