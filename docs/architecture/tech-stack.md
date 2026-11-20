@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: app/package.json
   - code: supabase/functions/_shared/gemini.ts
-verified_at: 76d2379
+verified_at: 46197ac
 ---
 
 # Tech stack
