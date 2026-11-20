@@ -16,7 +16,7 @@ create table if not exists disease_cards (
   source_page text,
   verified boolean not null default false,   -- teammate checked card against source
   verified_by text,
-  embedding vector(1024),                    -- Voyage multilingual (1024 dims); change if model changes
+  embedding vector(1024),                    -- Gemini gemini-embedding-001 at 1024 dims; change if model changes
   created_at timestamptz not null default now()
 );
 

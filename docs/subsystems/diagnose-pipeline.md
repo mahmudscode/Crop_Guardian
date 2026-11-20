@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: 849639a
+verified_at: be5faf0
 ---
 
 # Diagnose pipeline
