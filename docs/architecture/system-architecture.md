@@ -7,7 +7,7 @@ sources:
   - code: supabase/functions/diagnose/index.ts
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # System architecture
@@ -21,14 +21,14 @@ flowchart LR
     V --> Q[Embed symptoms + candidate names]
     Q --> P[(pgvector<br/>disease cards)]
     P -->|top 3 cards| A[Gemini answer<br/>Bangla, cards only]
-    V -->|low confidence / not rice| R[Ask for another photo<br/>refer to officer]
+    V -->|not rice, healthy-looking,<br/>or too little evidence| R[Ask for another photo<br/>or refer to officer]
     A --> U[Result card: diagnosis, actions,<br/>prevention, source, confidence]
     R --> U
 ```
 
 ## Request flow
 1. **Upload.** Farmer takes or picks a leaf photo; the Edge Function receives it and keeps it in memory only.
-2. **Observe.** Gemini vision is shown the names and source symptom text of every verified card and returns structured JSON: visible symptoms (English for search, Bangla for the farmer), up to 3 candidates chosen only from that list with a confidence each, `is_rice` and `photo_quality`.
+2. **Observe.** Gemini vision is shown the names and source symptom text of every verified card and returns structured JSON: visible symptoms (English for search, Bangla for the farmer), an overall `assessment` (healthy, listed, other, unclear), and, only if "listed", up to 3 candidates chosen from that list with the card features it sees and does not see. The code computes the confidence from that evidence (at least 2 visible features and a ratio of at least 0.5); the model's own confidence is not used.
 3. **Retrieve.** Symptoms plus candidate names are embedded (Gemini embedding, 1024 dimensions); pgvector returns the top 3 verified disease cards, and the top candidate's card is always included.
 4. **Answer.** Gemini picks ONE card and writes the reply in simple Bangla from that card only: diagnosis (worded as "likely"), what to do now, prevention. The app adds that card's source. If confidence is low or no card matches, it asks for another photo or points to the local agriculture officer.
 

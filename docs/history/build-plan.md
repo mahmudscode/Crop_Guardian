@@ -5,7 +5,7 @@ created: 2026-11-20
 updated: 2026-11-20
 sources:
   - code: docs/source-material/Crop_Guardian_Tech_Stack_and_System_Architecture.pdf
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Build plan (about 3.5 hours)

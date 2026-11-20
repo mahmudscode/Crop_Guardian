@@ -10,7 +10,7 @@ sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/App.jsx
   - code: eval/score.py
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Crop Guardian: project guide
@@ -36,7 +36,7 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 | Web app (`app/`) | Works locally against the deployed backend, **not hosted publicly yet** |
 | Disease cards | 5 of 6 filled from cited sources. Hispa has no source text yet. Bangla text is a Claude translation that **no native speaker has reviewed** |
 | Card verification | The pipeline only uses cards with `verified = true`. `supabase/seed.sql` ships them as `false`. The live database currently holds the 5 filled cards as `verified = true` with `verified_by = 'TEST ONLY - not human-reviewed'`. A teammate must check each card against its source and set the real values |
-| Accuracy | **Not yet measured properly.** An informal 42-photo test found the deployed pipeline names a disease for most leaves, including ones we have no card for, and its confidence is not reliable (details in `docs/operations/evaluation.md`). Do not quote any accuracy figure from it |
+| Accuracy | **Not yet measured properly.** An informal 42-photo test found the first version named a disease for most leaves. An evidence gate cut wrong answers shown from 30 to 14 and stopped false alarms on healthy leaves, but correct detections fell from 5 to 2 of 12 and about 88% of the answers still shown are wrong. Tuned on the same photos, so optimistic. Details in `docs/operations/evaluation.md`. Do not quote any accuracy figure from it |
 | Demo video (180 s) | Not recorded |
 | Business / monetization note | Missing (the rubric scores it) |
 
@@ -48,13 +48,13 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 Phone photo -> React app (resize to 1024px JPEG)
   -> Supabase Edge Function `diagnose`
        1. list verified cards (names + source symptom text)
-       2. Gemini vision: pick up to 3 candidates ONLY from that list, with confidence; Bangla symptoms
+       2. Gemini vision: assess healthy / listed / other / unclear; for "listed", up to 3 candidates ONLY from that list, with the card features it sees and does not see; Bangla symptoms. Code computes the confidence from that evidence
        3. embed symptoms (Gemini embedding, 1024 dims) -> pgvector `match_disease_cards` -> top 3 cards
        4. Gemini answer: choose ONE card, write Bangla sections using only that card's text
   -> JSON -> app shows diagnosis, steps, symptoms, source, confidence, officer note
 ```
 
-Refusals happen at several points: not rice or poor photo (`retry_photo`), no candidate above `CONF_THRESHOLD` (`low_confidence`), no matching card (`no_card`). Photos are processed in memory and never stored by this project (Google receives them for analysis; see section 8).
+Refusals happen at several points: not rice, poor or unclear photo (`retry_photo`); the model judges the leaf healthy (`healthy_like`); damage that does not clearly match a card, or fewer than two visible card features (`low_confidence`); no matching card (`no_card`). The displayed confidence is the share of a card's described features the model reports seeing, computed in code, not a probability. Photos are processed in memory and never stored by this project (Google receives them for analysis; see section 8).
 
 Prompt rules live in `docs/reference/prompts.md`; the code in `supabase/functions/diagnose/index.ts` is the source of truth.
 
@@ -85,6 +85,7 @@ docs/                       wiki (this guide, architecture, prompts, evaluation,
 |---|---|---|---|
 | `ok` | 200 | A card-backed answer | `sections` {diagnosis_bn, what_to_do_bn[], prevention_bn[]}, `answer_bn`, `confidence`, `top_candidate`, `disease_en`, `sources[]`, `observation`, `seconds` |
 | `retry_photo` | 200 | Not rice or poor photo | `message_bn` |
+| `healthy_like` | 200 | Model sees no clear lesions | `message_bn` |
 | `low_confidence` / `no_card` | 200 | Not sure, refer to officer | `message_bn` |
 | `rate_limited` | 429 | More than 10 requests per 10 minutes per IP (best effort) | `message_bn` |
 | `busy` | 503 | Gemini overloaded or timed out | `message_bn` |
@@ -104,7 +105,7 @@ Card rules: text only from the cited source; pesticide names copied exactly or l
 |---|---|---|
 | `GEMINI_API_KEY` | Supabase secret; local `.env` | **Yes** |
 | `ADMIN_KEY` | Supabase secret; local `.env` | **Yes** |
-| `GEMINI_MODEL`, `GEMINI_EMBED_MODEL`, `CONF_THRESHOLD`, `SIM_THRESHOLD` | Supabase secret; local `.env` | No |
+| `GEMINI_MODEL`, `GEMINI_EMBED_MODEL`, `SIM_THRESHOLD`, `MIN_MATCHES`, `EVIDENCE_MIN_RATIO` | Supabase secret; local `.env` | No |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Injected into functions by Supabase | **Service role key: yes** |
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | `app/.env` | Anon key is public by design |
 | Supabase access token (`sbp_...`), database password | Your own login / password manager | **Yes** |
@@ -155,7 +156,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 
 ## 12. Open work, by priority
 
-1. Fix over-confident diagnoses (make "not sure" the default when evidence is weak) and re-measure.
+1. The over-confidence gate reduced wrong answers but not the model's inability to tell diseases apart; next: fresh photos, a stronger or fine-tuned vision component, and re-measure.
 2. Measure accuracy on 10 to 15 expert-labelled rice photos from a licensed dataset, ideally also phone photos from a real field; fill `docs/operations/evaluation.md`.
 3. Verify the cards against their sources (a teammate) and have a Bangla reader review the translations; write the hispa card from a real source.
 4. Host the web app publicly (Vercel, Netlify or Cloudflare Pages) so judges can open it without login.

@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: eval/score.py
   - code: eval/README.md
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Evaluation and KPIs
@@ -60,3 +60,14 @@ Set: 6 photos per class from `Project-AgML/rice_disease_classification_banglades
 Gemini response time: median 7.0 s, max 28.5 s (n=42).
 
 What it shows: the deployed pipeline names one of our diseases for almost every leaf (35 of 42), including 23 of 24 photos of problems we have no card for, and its confidence (0.6-0.95) does not separate right from wrong. The pretrained classifier is weak on these photos (domain shift; its card's 97% is on its own split) but does say "healthy" correctly. Requiring both to agree is safe but almost never answers.
+
+## Over-confidence fix (2026-11-20) - tuned on the same 42 photos, so optimistic
+The baseline named a disease for almost every leaf and its self-reported confidence did not separate right from wrong (offline rule search: no confidence or margin cutoff helped; at 0.85 and above every answer shown was wrong). The vision step was changed to an evidence gate (see [[prompts]]): the model must list visible and unseen card features, the code computes the confidence, and "healthy" / "other" / "unclear" are allowed outcomes. Same photos, same model (`gemini-3.1-flash-lite`):
+
+| Version | Blast+tungro right (of 12) | Healthy not flagged (of 6) | No-card refused (of 24) | Answers shown | Wrong shown |
+|---|---|---|---|---|---|
+| Baseline (self-reported confidence) | 5 | 4 | 1 | 35 | 30 |
+| Evidence gate, ratio >= 0.6 | 0 | 6 | 24 | 0 | 0 |
+| Evidence gate, ratio >= 0.5 (deployed) | 2 | 6 | 14 | 16 | 14 |
+
+Reading: far fewer wrong answers and no false alarms on healthy leaves, but real detections fell (5 to 2) and about 88% of the answers still shown are wrong, so precision did not improve. The model cannot reliably tell these diseases apart on these photos; the gate mainly makes it say less. The 0.6 version was too strict because the Blast card lists stem and neck rot that can never be visible on one leaf; 0.5 was picked after seeing that, on the same photos. Needs fresh photos and a stronger or fine-tuned vision component before any accuracy claim. Raw results: `eval/results_evidence_v1_strict_2026-11-20.json`, `eval/results_evidence_v2_final_2026-11-20.json`. A stronger-model run (`gemini-3.5-flash`) was abandoned after 11 photos because it took 20-40 s or more per photo and saturated the free quota.

@@ -4,24 +4,35 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
 import { embed, generate, GeminiBusyError, type Part } from "../_shared/gemini.ts";
 
-const CONF_THRESHOLD = Number(Deno.env.get("CONF_THRESHOLD") ?? "0.5"); // tune on test set
+// Evidence gate (replaces the model's self-reported confidence, which did not separate right from wrong answers):
+// a disease is only offered if >= MIN_MATCHES features from its card are visibly present AND
+// matches / (matches + not_seen) >= EVIDENCE_MIN_RATIO. The displayed confidence is that ratio, computed here.
+const MIN_MATCHES = Number(Deno.env.get("MIN_MATCHES") ?? "2");
+const EVIDENCE_MIN_RATIO = Number(Deno.env.get("EVIDENCE_MIN_RATIO") ?? "0.5");
 const SIM_THRESHOLD = Number(Deno.env.get("SIM_THRESHOLD") ?? "0.3");   // tune on test set
-
-const NONE_NAME = "None of these";
 
 // The vision step may only choose among diseases we hold a verified, embedded card for, and it is shown
 // each card's source symptom text so it compares what it sees with the sources (not with its own memory).
 const visionPrompt = (known: { disease_name_en: string; symptoms_en: string | null }[]) =>
-  `You are a rice plant-health assistant. Look at the photo.
+  `You are a careful rice plant-health assistant. Look at the photo.
 Describe only what you can see: lesion shape, colour, size, position.
 The app supports ONLY these diseases. Each is followed by its source description:
 ${known.map((k) => `- ${k.disease_name_en}: ${k.symptoms_en ?? ""}`).join("\n")}
-Rules:
-- candidates: up to 3, chosen ONLY from the names above, each with a confidence from 0 to 1 for how well the VISIBLE symptoms match that description.
-- If nothing fits, return one candidate named "${NONE_NAME}". When unsure use a confidence below 0.5. Do not guess.
-- symptoms: short English phrases for what you see. symptoms_bn: the same in simple Bangla.
-Return ONLY JSON: {"is_rice": true|false, "symptoms": [...], "symptoms_bn": [...], "candidates": [{"name_en": "...", "confidence": 0.0}], "photo_quality": "good|poor"}
-If the photo is not a rice plant or is unclear, set is_rice=false or photo_quality="poor". Do not give treatment.`;
+
+First decide an overall "assessment":
+- "healthy": the leaves look healthy, with no clear lesions or damage.
+- "listed": the visible symptoms clearly match one or more diseases in the list above.
+- "other": there is damage or lesions, but they do not clearly match any listed disease (another disease, an insect, a nutrient problem, or damage you cannot identify).
+- "unclear": the photo is too blurry, too far away or too limited to judge.
+Be strict. Most photos will NOT clearly match a listed disease. Choose "listed" only if you can point to at least two specific features from that disease's description that are visible in THIS photo. Never guess.
+
+For "listed", give up to 3 candidates, chosen ONLY from the names above. For each candidate give:
+- "visible_matches": features from its description that you can actually see in this photo (short phrases),
+- "not_seen": features from its description that you looked for and did NOT see (short phrases).
+For any other assessment, give an empty candidates list.
+symptoms: short English phrases for what you see. symptoms_bn: the same in simple Bangla.
+Return ONLY JSON: {"is_rice": true|false, "photo_quality": "good|poor", "assessment": "healthy|listed|other|unclear", "symptoms": [...], "symptoms_bn": [...], "candidates": [{"name_en": "...", "visible_matches": [...], "not_seen": [...]}]}
+If the photo is not a rice plant, set is_rice=false. Do not give treatment.`;
 
 const ANSWER_PROMPT = `You write advice for a Bangladeshi rice farmer in simple Bangla.
 Rules:
@@ -63,6 +74,7 @@ const RETRY_MSG_BN = "ছবিটি পরিষ্কার নয় বা 
 const ERROR_MSG_BN = "কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।";
 const BUSY_MSG_BN = "সার্ভার এখন ব্যস্ত। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
 const LIMIT_MSG_BN = "অনেক বেশি অনুরোধ করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+const HEALTHY_MSG_BN = "ছবিতে রোগের স্পষ্ট লক্ষণ দেখা যাচ্ছে না। সন্দেহ থাকলে স্থানীয় কৃষি কর্মকর্তার সাথে যোগাযোগ করুন।";
 const OFFICER_MSG_BN = "আমি নিশ্চিত নই। অনুগ্রহ করে আপনার স্থানীয় কৃষি কর্মকর্তার সাথে যোগাযোগ করুন।";
 
 Deno.serve(async (req) => {
@@ -90,17 +102,27 @@ Deno.serve(async (req) => {
     );
     const obs = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1));
     const names = new Set(known.map((k) => k.disease_name_en.toLowerCase()));
+    const strs = (v: unknown): string[] => (Array.isArray(v) ? v.map(String).filter(Boolean) : []);
+    // confidence is computed from the evidence the model listed, not self-reported
     obs.candidates = (Array.isArray(obs.candidates) ? obs.candidates : [])
-      .map((c: { name_en: string; confidence: unknown }) => ({ name_en: String(c.name_en ?? ""), confidence: Number(c.confidence) || 0 }))
+      .map((c: { name_en: string; visible_matches: unknown; not_seen: unknown }) => {
+        const m = strs(c.visible_matches).length, n = strs(c.not_seen).length;
+        return { name_en: String(c.name_en ?? ""), matches: m, not_seen: n, confidence: m >= MIN_MATCHES ? Math.round((m / (m + n)) * 100) / 100 : 0,
+          visible_matches: strs(c.visible_matches), not_seen_list: strs(c.not_seen) };
+      })
       .filter((c: { name_en: string }) => names.has(c.name_en.toLowerCase()));
-    const top = [...obs.candidates].sort((a, b) => b.confidence - a.confidence)[0];
+    const top = [...obs.candidates].sort((a, b) => b.confidence - a.confidence || b.matches - a.matches)[0];
+    const secs = () => (Date.now() - t0) / 1000;
 
-    if (!obs.is_rice || obs.photo_quality === "poor") {
-      return json({ status: "retry_photo", message_bn: RETRY_MSG_BN, observation: obs, seconds: (Date.now() - t0) / 1000 });
+    if (!obs.is_rice || obs.photo_quality === "poor" || obs.assessment === "unclear") {
+      return json({ status: "retry_photo", message_bn: RETRY_MSG_BN, observation: obs, seconds: secs() });
     }
-    // no candidate from our list ("None of these"), or too unsure: refer to the officer instead of guessing
-    if (!top || top.confidence < CONF_THRESHOLD) {
-      return json({ status: "low_confidence", message_bn: OFFICER_MSG_BN, observation: obs, seconds: (Date.now() - t0) / 1000 });
+    if (obs.assessment === "healthy") {
+      return json({ status: "healthy_like", message_bn: HEALTHY_MSG_BN, observation: obs, seconds: secs() });
+    }
+    // "other", or a "listed" claim without enough visible evidence: refer to the officer instead of guessing
+    if (obs.assessment !== "listed" || !top || top.confidence < EVIDENCE_MIN_RATIO) {
+      return json({ status: "low_confidence", message_bn: OFFICER_MSG_BN, observation: obs, seconds: secs() });
     }
 
     // 2. Retrieve

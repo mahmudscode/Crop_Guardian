@@ -8,7 +8,7 @@ function ConfidenceBadge({ value }) {
   const color = pct >= 70 ? "bg-green-600" : "bg-amber-500";
   return (
     <span className={`${color} text-white rounded-full px-3 py-1 text-sm font-semibold`}>
-      নিশ্চয়তা: {toBn(pct)}%
+      লক্ষণ মিল: {toBn(pct)}%
     </span>
   );
 }

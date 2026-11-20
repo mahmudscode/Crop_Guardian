@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: supabase/functions/diagnose/index.ts
   - code: docs/source-material/AIBC_Participants_Guide.pdf
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Safeguards, privacy and data sovereignty
@@ -15,7 +15,7 @@ The design refuses to guess: it shows only advice a source card supports, and ke
 
 | Risk | Safeguard |
 |---|---|
-| Wrong diagnosis | Confidence shown to the user; below threshold the app asks for another photo or refers to an officer |
+| Wrong diagnosis | The model must list the card features it actually sees and does not see; fewer than two visible features, a healthy-looking leaf, or damage that matches no card all lead to "not sure, ask the officer". The result shows the share of described features seen, not a probability. Measured limits are in [[evaluation]]: the gate cut wrong answers but most answers still shown were wrong, so the output is decision support, not a verdict |
 | Invented pesticide or dose | Answer prompt allows only card content; cards are human-checked against sources |
 | Photo privacy | Photo processed in memory, not stored; no account needed for the demo |
 | Data ownership | Knowledge base is open, cited agronomy text; no farmer data leaves the app except the API call for analysis |
@@ -24,7 +24,7 @@ The design refuses to guess: it shows only advice a source card supports, and ke
 
 ## Congress mandatory commitments (Section 15)
 - Lawful, legally sourced data (check licences for sources and test datasets)
-- Transparency in AI decisions: show symptoms observed, confidence, and source
+- Transparency in AI decisions: show symptoms observed, how many described features were seen, and the source
 - Active bias detection and mitigation (test across lighting, devices, growth stages)
 - No misleading or fabricated demos: report measured numbers only
 - Privacy-preserving design

@@ -1,0 +1,814 @@
+[
+ {
+  "file": "blast/01.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 6.7,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "circular brown spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "girdling and distorting the leaf sheaths",
+     "dark brown to purple spots"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 1,
+    "not_seen": 2,
+    "confidence": 0,
+    "visible_matches": [
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "oval or diamond-shaped spots",
+     "5-15 mm long and 3-5 mm wide"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "blast/02.jpg",
+  "true": "blast",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 6.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 1,
+    "not_seen": 3,
+    "confidence": 0,
+    "visible_matches": [
+     "dark brown to purple spots"
+    ],
+    "not_seen_list": [
+     "light grey centres",
+     "circular spots",
+     "girdling and distorting the leaf sheaths"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 1,
+    "not_seen": 2,
+    "confidence": 0,
+    "visible_matches": [
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "oval or diamond-shaped spots",
+     "5-15 mm long and 3-5 mm wide"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "blast/03.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 8.1,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "circular spots",
+     "girdling and distorting the leaf sheaths"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 1,
+    "not_seen": 2,
+    "confidence": 0,
+    "visible_matches": [
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "oval or diamond-shaped spots",
+     "5-15 mm long and 3-5 mm wide"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "blast/04.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.5,
+  "secs": 5.5,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "oval or diamond-shaped spots",
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "rots on sheath, stem and panicle",
+     "neck rot"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "blast/05.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 12.6,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "girdling and distorting the leaf sheaths",
+     "infected seeds do not fill properly"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "oval or diamond-shaped spots",
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "rots on the sheath, stem and panicle",
+     "neck rot"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "blast/06.jpg",
+  "true": "blast",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.5,
+  "secs": 4.1,
+  "cands": [
+   {
+    "name_en": "Blast",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "Oval or diamond-shaped spots",
+     "dark borders"
+    ],
+    "not_seen_list": [
+     "Rots on the sheath, stem and panicle",
+     "neck rot"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/01.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.5,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/02.jpg",
+  "true": "healthy",
+  "status": "healthy_like",
+  "disease": null,
+  "conf": null,
+  "secs": 8.9,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/03.jpg",
+  "true": "healthy",
+  "status": "healthy_like",
+  "disease": null,
+  "conf": null,
+  "secs": 5.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/04.jpg",
+  "true": "healthy",
+  "status": "healthy_like",
+  "disease": null,
+  "conf": null,
+  "secs": 2.4,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/05.jpg",
+  "true": "healthy",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 5.7,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "healthy/06.jpg",
+  "true": "healthy",
+  "status": "healthy_like",
+  "disease": null,
+  "conf": null,
+  "secs": 3.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/01.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 11.9,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "circular spots",
+     "girdling leaf sheaths"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 1,
+    "not_seen": 2,
+    "confidence": 0,
+    "visible_matches": [
+     "dark borders on spots"
+    ],
+    "not_seen_list": [
+     "oval or diamond-shaped spots",
+     "5-15 mm long and 3-5 mm wide"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/02.jpg",
+  "true": "insect",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.5,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/03.jpg",
+  "true": "insect",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.9,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/04.jpg",
+  "true": "insect",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 13.4,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/05.jpg",
+  "true": "insect",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.5,
+  "secs": 6.8,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "streaks turn yellowish-white",
+     "wavy edges"
+    ],
+    "not_seen_list": [
+     "starting from the tips",
+     "milky bacterial ooze"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "insect/06.jpg",
+  "true": "insect",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.3,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/01.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 15.7,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "circular spots",
+     "girdling and distorting the leaf sheaths"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/02.jpg",
+  "true": "leaf_scald",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.0,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/03.jpg",
+  "true": "leaf_scald",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 6.9,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "circular spots",
+     "girdling and distorting the leaf sheaths"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/04.jpg",
+  "true": "leaf_scald",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 4.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/05.jpg",
+  "true": "leaf_scald",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 3.5,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaf_scald/06.jpg",
+  "true": "leaf_scald",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.7,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/01.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Sheath blight",
+  "conf": 0.5,
+  "secs": 6.5,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "matches": 3,
+    "not_seen": 3,
+    "confidence": 0.5,
+    "visible_matches": [
+     "greenish-grey spots",
+     "brown margin",
+     "lesions on leaf sheaths"
+    ],
+    "not_seen_list": [
+     "grayish-white centre",
+     "sclerotia",
+     "large patches"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/02.jpg",
+  "true": "leaffolder",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.3,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/03.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Sheath blight",
+  "conf": 0.5,
+  "secs": 5.9,
+  "cands": [
+   {
+    "name_en": "Sheath blight",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "greyish-white center",
+     "brown margin"
+    ],
+    "not_seen_list": [
+     "ellipsoid or ovoid shape",
+     "sclerotia formation"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/04.jpg",
+  "true": "leaffolder",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.7,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/05.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.5,
+  "secs": 10.1,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "grey-green streaks starting from the tips",
+     "streaks turn yellowish-white with wavy edges"
+    ],
+    "not_seen_list": [
+     "milky bacterial ooze",
+     "kresek symptoms"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "leaffolder/06.jpg",
+  "true": "leaffolder",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.5,
+  "secs": 7.4,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "milky bacterial ooze",
+     "dries to a crust on the leaves"
+    ],
+    "not_seen_list": [
+     "grey-green streaks starting from the tips",
+     "yellowish-white streaks with wavy edges"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/01.jpg",
+  "true": "stripes",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 4.9,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/02.jpg",
+  "true": "stripes",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 4.5,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/03.jpg",
+  "true": "stripes",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 4.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/04.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Blast",
+  "conf": 0.67,
+  "secs": 14.3,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "circular spots",
+     "girdling and distorting the leaf sheaths"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 2,
+    "not_seen": 1,
+    "confidence": 0.67,
+    "visible_matches": [
+     "dark borders",
+     "oval or diamond-shaped spots"
+    ],
+    "not_seen_list": [
+     "rots on the sheath, stem and panicle"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/05.jpg",
+  "true": "stripes",
+  "status": "ok",
+  "disease": "Bacterial leaf blight",
+  "conf": 0.5,
+  "secs": 6.7,
+  "cands": [
+   {
+    "name_en": "Bacterial leaf blight",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "leaves show grey-green streaks starting from the margins",
+     "streaks turn yellowish-white with wavy edges"
+    ],
+    "not_seen_list": [
+     "milky bacterial ooze",
+     "kresek symptoms"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "stripes/06.jpg",
+  "true": "stripes",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.7,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/01.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/02.jpg",
+  "true": "tungro",
+  "status": "healthy_like",
+  "disease": null,
+  "conf": null,
+  "secs": 3.6,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/03.jpg",
+  "true": "tungro",
+  "status": "ok",
+  "disease": "Brown spot",
+  "conf": 0.5,
+  "secs": 7.4,
+  "cands": [
+   {
+    "name_en": "Brown spot",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark brown to purple spots",
+     "light grey centres"
+    ],
+    "not_seen_list": [
+     "small circular spots",
+     "girdling and distorting leaf sheaths"
+    ]
+   },
+   {
+    "name_en": "Blast",
+    "matches": 2,
+    "not_seen": 2,
+    "confidence": 0.5,
+    "visible_matches": [
+     "dark borders",
+     "lesions on leaves"
+    ],
+    "not_seen_list": [
+     "oval or diamond-shaped spots",
+     "rots on sheath, stem or panicle"
+    ]
+   }
+  ],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/04.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 4.2,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/05.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.2,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ },
+ {
+  "file": "tungro/06.jpg",
+  "true": "tungro",
+  "status": "low_confidence",
+  "disease": null,
+  "conf": null,
+  "secs": 2.7,
+  "cands": [],
+  "detail": null,
+  "model": "gemini-3.1-flash-lite"
+ }
+]

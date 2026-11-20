@@ -7,7 +7,7 @@ sources:
   - code: supabase/config.toml
   - code: .env.example
   - code: app/.env.example
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Setup: Supabase and the web app
@@ -57,7 +57,7 @@ curl -X POST https://<ref>.supabase.co/functions/v1/diagnose \
   -H "Content-Type: application/json" \
   -d "{\"image_base64\": \"$(base64 -w0 leaf.jpg)\", \"media_type\": \"image/jpeg\"}"
 ```
-Then follow [[evaluation]] and tune `CONF_THRESHOLD` and `SIM_THRESHOLD`.
+Then follow [[evaluation]] and re-tune `SIM_THRESHOLD`, `MIN_MATCHES` and `EVIDENCE_MIN_RATIO`.
 
 ## Notes
 - `diagnose` has `verify_jwt = false` for the no-account demo. Add rate limiting before any public launch to protect API spend.

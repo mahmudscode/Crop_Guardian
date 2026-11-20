@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: e816551
+verified_at: PLACEHOLDER_SHA
 ---
 
 # Diagnose pipeline
@@ -24,7 +24,7 @@ The farmer-facing safeguards are described in the root-level docs (`docs/concept
 
 > ⚠️ `vector(1024)` in the migration must equal the embedding size (`supabase/functions/_shared/gemini.ts`, `EMBED_DIMS`, model `gemini-embedding-001`, vectors re-normalised because truncated dimensions are not unit length). Changing the model or dimension means altering the column and re-embedding every card (set `embedding = null`, rerun `embed-cards`). Embeddings from different models are not comparable, so never mix them.
 
-> ⚠️ `CONF_THRESHOLD` (0.5) and `SIM_THRESHOLD` (0.3) are placeholders, not measured values. Tune them on the labelled test set before quoting any result.
+> ⚠️ `SIM_THRESHOLD` (0.3), `MIN_MATCHES` (2) and `EVIDENCE_MIN_RATIO` (0.5) are not measured values; `EVIDENCE_MIN_RATIO` was set after looking at the 42-photo results. Re-tune on fresh labelled photos before quoting results.
 
 > ⚠️ Never log or persist the image (the catch block in `supabase/functions/diagnose/index.ts` logs only the error). Privacy is a stated guarantee: photo in memory only, no storage bucket.
 
@@ -42,10 +42,14 @@ The farmer-facing safeguards are described in the root-level docs (`docs/concept
 
 > ⚠️ The rate limit (10 requests per 10 minutes per IP) is in-memory per function instance, so it is best-effort only and resets on cold start. It protects the free quota, not against a determined attacker. Behind shared mobile networks one IP can be many farmers; raise the limit if that bites.
 
-> ⚠️ Vision candidates are limited to diseases that have a verified, embedded card (`knownCards` in `supabase/functions/diagnose/index.ts`, cached 5 min per instance). Consequences: (1) a disease with no card (hispa) can only ever end in "not sure"; (2) new or newly verified cards appear after the cache expires; (3) the confidence value is the model's own and is poorly calibrated: a field photo labelled blast on Wikimedia came back as sheath blight at 0.85. Do not read it as a probability until tuned on labelled photos (`docs/operations/evaluation.md`).
+> ⚠️ Vision candidates are limited to diseases that have a verified, embedded card (`knownCards` in `supabase/functions/diagnose/index.ts`, cached 5 min per instance). Consequences: (1) a disease with no card (hispa) can only ever end in "not sure"; (2) new or newly verified cards appear after the cache expires; (3) the confidence is computed in code as matches / (matches + not_seen) from the features the model lists; it is NOT a probability. The model's own self-reported confidence was removed because it did not separate right from wrong answers (see `docs/operations/evaluation.md`).
 
 > ⚠️ Test photos need trustworthy labels. The first Wikimedia "Xanthomonas" test image was an 8-panel figure of cabbage, citrus and rice, so the early "correct at 85%" result was meaningless. Wikimedia file names are crowd labels, not expert diagnoses. Use a licensed, expert-labelled dataset for the KPI numbers.
 
 > ⚠️ A request carrying the `x-admin-key` header (the `ADMIN_KEY` secret) skips the per-IP rate limit; the evaluation script in `eval/` relies on this. Never ship that key in the frontend, and rotate it if it leaks, because with it anyone can bypass the limit and spend the free Gemini quota.
 
 > ⚠️ Every `diagnose` response includes a `model` field (the `GEMINI_MODEL` secret) so evaluation results record which model produced them. Changing the secret changes the live app immediately; `gemini-3.5-flash` took 20-40 s per photo and often much longer in the 42-photo run, so keep the default on `gemini-3.1-flash-lite` unless a measured gain justifies the delay.
+
+> ⚠️ The evidence gate lives in `supabase/functions/diagnose/index.ts` (`MIN_MATCHES`, `EVIDENCE_MIN_RATIO`). The ratio counts card features the model says are not seen, so a card that lists features which can never appear on a single leaf (the Blast card mentions stem and neck rot) cannot reach a high ratio. Keep cards focused on what a leaf photo can show, or the gate will refuse correct diagnoses. At 0.6 it refused every photo; 0.5 is a compromise chosen on the test photos.
+
+> ⚠️ New status `healthy_like` (assessment "healthy"). The app shows its message in the same amber card as the other non-ok statuses. A "healthy" verdict is the model's opinion from one photo, so the wording says no clear symptoms were seen and still refers to the officer.

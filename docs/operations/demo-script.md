@@ -5,7 +5,7 @@ created: 2026-11-20
 updated: 2026-11-20
 sources:
   - code: docs/source-material/AIBC_Participants_Guide.pdf
-verified_at: 33e0bef
+verified_at: PLACEHOLDER_SHA
 ---
 
 # 180-second video pitch script
