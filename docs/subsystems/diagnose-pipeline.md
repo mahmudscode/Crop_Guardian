@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: 44c24a4
+verified_at: e816551
 ---
 
 # Diagnose pipeline
@@ -47,3 +47,5 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 > ⚠️ Test photos need trustworthy labels. The first Wikimedia "Xanthomonas" test image was an 8-panel figure of cabbage, citrus and rice, so the early "correct at 85%" result was meaningless. Wikimedia file names are crowd labels, not expert diagnoses. Use a licensed, expert-labelled dataset for the KPI numbers.
 
 > ⚠️ A request carrying the `x-admin-key` header (the `ADMIN_KEY` secret) skips the per-IP rate limit; the evaluation script in `eval/` relies on this. Never ship that key in the frontend, and rotate it if it leaks, because with it anyone can bypass the limit and spend the free Gemini quota.
+
+> ⚠️ Every `diagnose` response includes a `model` field (the `GEMINI_MODEL` secret) so evaluation results record which model produced them. Changing the secret changes the live app immediately; `gemini-3.5-flash` took 20-40 s per photo and often much longer in the 42-photo run, so keep the default on `gemini-3.1-flash-lite` unless a measured gain justifies the delay.
