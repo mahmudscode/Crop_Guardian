@@ -32,7 +32,7 @@ verified_at: 4d9c993
 ## Judging rubric (5 x 20 = 100)
 1. Innovation and AI-native design
 2. Technical excellence and architecture
-3. Business value and commercial viability (add a short monetization note: e.g. DAE/NGO licensing, agri-input partners)
+3. Business value and commercial viability (written in `PROJECT_REPORT.md` section 10; assumptions still to validate)
 4. Global scalability and real-world impact
 5. Responsible AI, data sovereignty and presentation
 

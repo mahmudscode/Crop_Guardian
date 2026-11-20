@@ -38,7 +38,7 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 | Card verification | The pipeline only uses cards with `verified = true`. `supabase/seed.sql` ships them as `false`. The live database currently holds the 5 filled cards as `verified = true` with `verified_by = 'TEST ONLY - not human-reviewed'`. A teammate must check each card against its source and set the real values |
 | Accuracy | **Not yet measured properly.** An informal 42-photo test found the first version named a disease for most leaves. An evidence gate cut wrong answers shown from 30 to 14 and stopped false alarms on healthy leaves, but correct detections fell from 5 to 2 of 12 and about 88% of the answers still shown are wrong. Tuned on the same photos, so optimistic. Details in `docs/operations/evaluation.md`. Do not quote any accuracy figure from it |
 | Demo video (180 s) | Not recorded |
-| Business / monetization note | Missing (the rubric scores it) |
+| Business / monetization note | Written in `PROJECT_REPORT.md` section 10: sourced loss figures and a measured cost per diagnosis; who pays and how much are unvalidated assumptions |
 
 > ⚠️ Treat the accuracy line as the most important caveat. Claims in the pitch must be measured numbers (project rule).
 
@@ -161,7 +161,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 3. Verify the cards against their sources (a teammate) and have a Bangla reader review the translations; write the hispa card from a real source.
 4. (Done) Web app hosted on Vercel; keep an eye on Gemini availability before the demo and have a recorded video as a fallback.
 5. Record the 180-second video (`docs/operations/demo-script.md`).
-6. Write the business value / monetization note and add it to the pitch.
+6. Validate the business assumptions in `PROJECT_REPORT.md` section 10 (who pays, pricing, loss avoided) with a partner or pilot, and put the sourced parts in the pitch.
 7. Housekeeping: revoke any access token or password that was pasted in chat; confirm the submission cutoff time on the portal (the guide says the preliminary submission closes 2026-11-20).
 
 ## 13. Where to look next

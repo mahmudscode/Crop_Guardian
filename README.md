@@ -72,7 +72,7 @@ Backend setup and deployment: [`docs/operations/setup.md`](docs/operations/setup
 |---|---|
 | Innovation and AI-native design | Cards gate every answer; vision limited to known diseases: [project guide](docs/concepts/project-guide.md), [prompts](docs/reference/prompts.md) |
 | Technical excellence and architecture | [architecture](docs/architecture/system-architecture.md), [`supabase/functions/`](supabase/functions/), [implementation traps](docs/subsystems/diagnose-pipeline.md) |
-| Business value and viability | Not written yet (open item in the project guide) |
+| Business value and viability | [Report section 10](PROJECT_REPORT.md#10-business-value-and-viability): sourced loss figures, measured cost per diagnosis, payer hypotheses (not yet validated) |
 | Scalability and real-world impact | [roadmap](docs/concepts/roadmap.md), [problem](docs/concepts/problem.md) |
 | Responsible AI, data sovereignty | [safeguards](docs/concepts/responsible-ai.md), [evaluation limits](docs/operations/evaluation.md) |
 

@@ -150,14 +150,98 @@ Later: Bangla voice input and output; WhatsApp or SMS front end for low-bandwidt
 
 Constraints to be honest about: the free tiers have request and quota limits and will not serve large numbers of farmers; scaling needs paid capacity or a different hosting plan.
 
-## 10. Business value and viability (draft, not validated)
+## 10. Business value and viability
 
-This section is a starting outline for the team to confirm or replace; it contains no market figures because none have been gathered.
+This section separates three kinds of statement: **sourced** facts (with the source), **measured** numbers from this project, and **assumptions** that a pilot must test. It contains no market-size estimate, because we have no verified one, and no price, because pricing should come from the pilot.
 
-- **Value:** faster, cited, Bangla-language first-line guidance that reduces unnecessary travel to extension offices and helps officers prioritise cases.
-- **Possible paying parties (assumptions to test):** agricultural extension programmes and NGOs, agri-input suppliers (as a referral and information channel), and cooperatives or microfinance providers interested in crop-loss reduction.
-- **Cost drivers to model:** AI inference per photo, card authoring and expert review, and officer-review workflow.
-- **To validate:** willingness to pay, cost per diagnosis at scale, and measured loss reduction in pilots.
+### 10.1 The problem has a measurable economic size
+
+All loss figures below are quoted from the cited sources; they measure different things (national averages, field surveys, experiments) and must not be added together.
+
+| Disease | What the sources say | Source |
+|---|---|---|
+| Blast | BRRI says about 1% of Bangladesh's roughly four crore (40 million) tonnes of annual rice production is damaged by blast; in severely affected areas damage can reach 100%. One percent of that production is about **400,000 tonnes a year** (our arithmetic) | The Business Standard, 28 Jan 2024, quoting BRRI |
+| Bacterial leaf blight | In a BRRI field experiment on a susceptible variety, inoculated plots lost **5.8% to 30.4%** of yield, and infection at the mid-tillering, panicle-initiation and boot stages gave 21% to 30.4%. This is an experiment, not a national average | Ansari et al., *Bangladesh Rice Journal* 23(1), 2019 |
+| Sheath blight | Average yield loss of about **6%** in tropical and subtropical Asia, higher than other rice diseases; heavier on high-input, high-yield crops | IRRI, *Rice Diseases: Biology & Selected Management Practices* (2018), sheath blight chapter |
+| Tungro | Average annual losses in the 1980s were estimated to exceed **USD 1,500 million**, with serious outbreaks repeatedly in Bangladesh and other countries (a historic estimate, not current) | IRRI (2018), tungro chapter, citing Herdt 1987 |
+
+The commercial logic is early, correct action: the earlier a farmer recognises a disease and acts, the more of that loss is avoidable. How much of it Crop Guardian actually avoids is **not measured yet**; that is what a pilot must establish (10.6).
+
+### 10.2 Who gets value, and who could pay
+
+The people who benefit most (smallholder farmers) are the least able to pay, so the plan is **free for farmers, paid for by organisations that already invest in farmer advice.** Everything in the right-hand column is an assumption.
+
+| Party | Value to them | Possible way to pay (to be tested) |
+|---|---|---|
+| Smallholder farmers | Fast, Bangla, cited first-line guidance without a trip or a wait | Free |
+| Agricultural extension services | An extension network that is stretched thin: a 2011 scoping mission (report approved by USAID/Bangladesh, posted 2015) counted about 12,600 field officers, one per block of roughly 2,500 to 3,000 farm households, and said most farmers never meet their officer (figures are about a decade old). The app triages cases so officers see the uncertain and serious ones | Annual licence per upazila or programme, or a government or donor-funded rollout |
+| NGOs and donor-funded agriculture projects | A reportable, low-cost advisory channel with measurable reach | Project-budget licence including card updates and support |
+| Lenders, cooperatives, insurers | Early warning of outbreaks and loss reduction | Subscription to aggregated, anonymised outbreak insight (needs consent and a privacy design; **not built**) |
+| Agri-input companies | A trusted channel to farmers | **Handle with care:** advice must stay card-based and neutral. A conflict of interest would destroy trust, so any arrangement must be clearly labelled and kept separate from the diagnosis |
+
+### 10.3 Unit economics (measured, with caveats)
+
+We measured the real AI usage of one diagnosis on four photos: about **1,900 input tokens and 500 output tokens (including the model's thinking)**, across the vision call and the answer call, plus a very small embedding call.
+
+At the paid prices Google lists for `gemini-3.1-flash-lite` (USD 0.25 per million input tokens and USD 1.50 per million output tokens, and USD 0.15 per million for the embedding model, read from Google's pricing page through a summary and **not yet verified against the verbatim page**), that is about **USD 0.0012 per diagnosis, roughly USD 1.2 per thousand and USD 1,200 per million**.
+
+Read this correctly:
+
+- Four photos is a small sample, and token use varies with the photo and prompt. Retries and fallback calls add to it.
+- It covers only the AI calls. It excludes hosting beyond the free tiers, support, and the **real fixed costs: expert verification of every card, Bangla review, and keeping cards current.**
+- The prototype runs on free tiers at zero cost, but Google's pricing page states that **free-tier content is used to improve its products and paid-tier content is not.** A deployment that handles farmers' photos should use the paid tier, so the cost above is the relevant one for a real product.
+
+The takeaway: inference is cheap enough that it is not the constraint. The business depends on expert review, delivery and trust, not on compute.
+
+### 10.4 Revenue model options
+
+1. **Organisation licence (preferred starting point):** an annual fee per upazila or programme covering access, card updates and support. Predictable, and aligned with how extension and NGO programmes are funded.
+2. **Usage-based fee per diagnosis:** possible because the unit cost is tiny, but it makes farmers' use a cost to the payer, so it suits programmes with a fixed caseload better than open access.
+3. **Aggregated insight subscription:** outbreak maps for lenders, cooperatives and officers. High value in principle; requires location and consent handling that the current design deliberately avoids, so it is a later phase.
+
+Prices are not proposed here. They should be set after learning what a pilot partner already spends on advisory services.
+
+### 10.5 How a farmer's value is measured (inputs, and what we know)
+
+Expected loss avoided per farmer per season is: *yield × price × disease loss rate × share of the loss that earlier correct action prevents × the share of farmers who follow the advice.*
+
+| Input | Status |
+|---|---|
+| Disease loss rates | Sourced ranges above, mostly from experiments or regional averages |
+| Yield and rice price | Not gathered (needs current official data) |
+| Share of loss prevented by earlier correct action | **Unknown. Must be measured in a pilot** |
+| Share of farmers who follow the advice | **Unknown. Must be measured** |
+| Correct-diagnosis rate of the app | **Not established** (see section 7); this multiplies every benefit above |
+
+### 10.6 Path to a sustainable business
+
+| Stage | What happens | What must be true before moving on |
+|---|---|---|
+| 0. Now | Working prototype, honest evaluation | Accuracy measured on expert-labelled and phone photos; cards verified by an agronomist; Bangla reviewed by a native speaker |
+| 1. Pilot | One or two upazila extension offices or an NGO programme, a test group and a comparison group | Measured accuracy in the field; officer time saved; farmer return rate; advice followed; loss avoided; real cost per diagnosis |
+| 2. Paid programmes | Licences to extension services and NGO programmes | A partner willing to pay, with a measured benefit to point to |
+| 3. Expansion | More crops and regions by adding cards; voice and SMS or WhatsApp access | Card authoring and review process that scales without more engineering |
+
+### 10.7 Risks to viability
+
+- **Accuracy is not established** (section 7). Until it is, the product is decision support that often says "not sure", and an organisation will rightly hesitate to pay or to take liability for advice.
+- **Trust and neutrality.** One bad recommendation, or a perceived commercial bias, would damage adoption. Advice stays strictly card-based, with no doses from memory.
+- **Platform dependence.** The prototype depends on Google's free tier, which is unreliable and has data-use terms unsuitable for production. Moving to the paid tier or an alternative provider is a known cost and change.
+- **Access.** Many smallholders do not have a smartphone or mobile internet. Press coverage of GSMA's 2024 survey reports rural smartphone ownership well below urban (about 26% against 41%), but we could not open the source: **verify before quoting.** This is why an officer-facing channel and later SMS or voice access matter.
+- **Willingness to pay** among smallholders is low, which is why the model targets organisations.
+- **Competition and existing digital advisory tools:** **no competitor scan has been done.**
+- **Regulation and liability for pesticide advice** need legal and agronomist input before any real deployment.
+
+### 10.8 What is verified and what is not
+
+| Verified (read at the source) | Measured here | Assumption or unknown |
+|---|---|---|
+| Disease loss figures in 10.1 | Tokens per diagnosis; cost arithmetic | Who pays, how much, and when |
+| Extension staffing and block size (2011 data) | Accuracy smoke test (section 7) | Loss avoided by the app |
+| Google's free-tier data-use wording | | Google's exact paid prices (read through a summary) |
+| | | Current BBS production and area; rural smartphone access (press-reported, unopened) |
+
+Sources: the Business Standard article on blast (28 January 2024); Ansari et al., *Bangladesh Rice Journal* 23(1), 2019; IRRI (2018) *Rice Diseases* chapters; MEAS/University of Illinois, *Report on the Status of ICT for Agricultural Extension in Bangladesh* (2015, 2011 data); Google AI pricing page.
 
 ## 11. Limitations and open items
 
