@@ -167,6 +167,7 @@ Deno.serve(async (req) => {
       confidence: top.confidence,
       top_candidate: top.name_en,
       disease_en: chosen.disease_name_en,
+      disease_bn: chosen.disease_name_bn,
       sources: [{ name: chosen.source_name, url: chosen.source_url, page: chosen.source_page }],
       observation: obs,
       seconds: (Date.now() - t0) / 1000,

@@ -18,6 +18,7 @@ Built for the International AI Builders Congress (AIBC) 2026, AgriSphere AI chal
 | **Core use case (only one)** | Photo in, Bangla diagnosis and next steps out |
 | **Diseases** | Blast, bacterial leaf blight, brown spot, sheath blight, tungro (cards written); hispa (card still missing) |
 | **AI approach** | A multimodal model (Google Gemini) reads the photo; retrieval over human-checked disease cards (RAG) supplies the advice, so the model cannot invent treatments |
+| **Follow-up chat** | After a diagnosis the farmer can ask about the disease in Bangla (symptoms, cause, what to do, prevention). Answers come only from the verified cards; off-topic and dose questions are refused |
 | **Safeguards** | Only verified, cited cards can reach a farmer; not-rice or unclear photos are refused; photos are not stored by us; confidence and source are always shown |
 
 ## How it works

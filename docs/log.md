@@ -20,3 +20,7 @@ Append-only. Newest entries at the bottom.
 ## [2026-11-20] reorganize | planning docs became wiki pages
 
 - Moved the 12 flat planning docs into category folders with frontmatter and `[[links]]`; added [[project-guide]]; moved the requirement PDFs to `docs/source-material/`; fixed `.gitignore` so `.env.example` is committed.
+
+## [2026-11-20] chat | added a card-grounded follow-up chat
+
+- New `chat` Edge Function, chat panel in the app, number guard, smoke test and unit tests. See [[chat-assistant]].

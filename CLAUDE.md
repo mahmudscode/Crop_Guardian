@@ -3,7 +3,7 @@
 Bangla rice-disease diagnosis from a leaf photo, grounded by RAG over cited disease cards. Hackathon project (AIBC 2026, AgriSphere AI). See [README.md](README.md) and [docs/](docs/).
 
 ## Rules
-- One core use case only: photo in, Bangla diagnosis out, 6 rice diseases.
+- One core use case only: photo in, Bangla diagnosis out, 6 rice diseases, plus a follow-up chat that answers only from the verified cards (never a general chatbot).
 - Treatment advice must come only from human-verified disease cards. Never invent pesticide names or doses.
 - Photos are processed in memory, never stored.
 - API keys only in Supabase secrets / `.env` (git-ignored).

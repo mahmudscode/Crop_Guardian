@@ -5,3 +5,6 @@ verify_jwt = false   # demo: no account needed; rate-limit at the platform level
 
 [functions.embed-cards]
 verify_jwt = false   # protected by x-admin-key header instead
+
+[functions.chat]
+verify_jwt = false   # demo: no account needed; per-IP rate limit inside the function

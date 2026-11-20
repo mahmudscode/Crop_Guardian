@@ -34,6 +34,7 @@ To run or deploy: [[setup]]. To submit to the hackathon: [[submission-checklist]
 
 - [[diagnose-pipeline]] -- Edge Function: vision, retrieval, grounded Bangla answer
 - [[knowledge-base]] -- disease card schema, sources, card rules
+- [[chat-assistant]] -- follow-up chat: grounded Bangla Q&A about the diagnosed disease
 - [[knowledge-cards]] -- the seeded cards, their sources, what is still missing
 
 ## decisions

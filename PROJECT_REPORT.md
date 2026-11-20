@@ -13,7 +13,7 @@ Crop Guardian lets a Bangladeshi rice farmer photograph a sick leaf and receive 
 
 What is real today:
 
-- A working end-to-end system: React web app, Supabase backend (database with vector search and two Edge Functions), Google Gemini for vision, answers and embeddings, all on free tiers and live on the internet.
+- A working end-to-end system: React web app, Supabase backend (database with vector search and three Edge Functions: diagnose, a follow-up chat, and a card-embedding tool), Google Gemini for vision, answers and embeddings, all on free tiers and live on the internet.
 - Five disease cards written from cited sources (IRRI and the Pacific Pests, Pathogens and Weeds database).
 - A re-runnable evaluation harness and an honest first measurement.
 
@@ -34,7 +34,7 @@ Rice is Bangladesh's staple crop. Smallholder farmers often cannot identify a di
 2. **Refuse rather than guess.** Not rice, unclear, healthy-looking, or too little visible evidence all lead to "not sure, ask the officer".
 3. **Bangla first.** UI, symptoms shown to the farmer and answers are in simple Bangla.
 4. **No account, no stored photos.** The photo is processed in memory and never saved by this project.
-5. **One core use case.** No extra features.
+5. **One core use case.** Photo in, Bangla diagnosis out, plus a follow-up chat that answers only from the same verified cards. It is not a general chatbot, and no other features.
 
 ## 4. System architecture
 
@@ -58,6 +58,8 @@ flowchart LR
 4. **Retrieve.** Symptoms and candidate names are embedded; pgvector returns the 3 nearest verified cards, and the top candidate's card is always included.
 5. **Answer.** Gemini picks one card and writes Bangla sections (diagnosis worded as "likely", what to do, prevention) from that card's text only. The app adds that card's source.
 6. **Resilience.** A per-IP rate limit protects the free quota; if the main Gemini model is overloaded, out of quota, closed to the account or times out, the backend automatically tries fallback models and reports which one answered.
+
+**Follow-up chat.** After a diagnosis, the farmer can ask about that disease in Bangla (symptoms, cause, what to do, prevention); the same panel also works before any photo for the diseases we cover. A separate `chat` Edge Function answers only from the verified cards (the diagnosed disease's card, or the nearest two by vector search when there is no diagnosis) and reports which cards it used so only those sources are shown. It refuses off-topic questions, treats the farmer's text as a question and never as an instruction, will not give doses or numbers that are not in the cards (a code check discards any answer containing a number absent from the cards), and keeps no conversation history on our side. Its depth is limited by the short cards.
 
 **Data model.** One table, `disease_cards` (names in English and Bangla, symptoms, cause, treatment, prevention, source name/URL/page, `verified`, `verified_by`, a 1024-dimension embedding). Row-level security exposes only verified cards. A database function returns the nearest cards.
 
@@ -95,6 +97,7 @@ The Bangla in the cards is a machine translation of the English source text. **I
 | Data ownership | Knowledge base is open, cited agronomy text | Farmer photos still leave the device for analysis |
 | Language bias | Bangla-first UI and answers | No test with real farmers yet |
 | Out-of-scope input | Non-rice, unclear and healthy-looking photos handled separately | Diseases with no card are often still named as a disease we do have |
+| Chat misuse | Card-only answers, off-topic and dose requests refused, instructions inside a message ignored, answers with numbers not in the cards discarded; questions are not stored | Questions are sent to Google's Gemini API like photos; the Bangla wording is the model's and unreviewed; answers cannot exceed the short card text |
 | Honesty of claims | Only measured numbers are reported; a flawed test image was caught and excluded | |
 
 ## 7. Evaluation: what we measured and what it means
@@ -121,6 +124,10 @@ The Bangla in the cards is a machine translation of the English source text. **I
 
 **What would give a real number:** 10 to 15 or more expert-labelled photos per disease from a licensed dataset, plus phone photos from real fields, evaluated before any accuracy claim. Scripts and raw results are in [`eval/`](eval/README.md); details in [`docs/operations/evaluation.md`](docs/operations/evaluation.md).
 
+### Chat safety checks
+
+A separate live smoke test (`eval/chat_smoke.py`) runs 12 checks: grounded answers with and without a diagnosis, off-topic and personal questions, another crop (wheat), a prompt-injection attempt asking for a pesticide dose, a dose request in Bangla, a "what disease do I have?" question with no photo (it must ask for a photo), and four malformed requests. **All 12 passed on 2026-11-20.** Five unit tests of the number guard also pass. These show safe behaviour on a few cases; they are not a measure of answer quality, which has not been reviewed by a Bangla speaker or an agronomist.
+
 ## 8. How it was built
 
 Built in one intensive session on 2026-11-20 with an AI coding assistant, working in small verified steps.
@@ -133,7 +140,8 @@ Built in one intensive session on 2026-11-20 with an AI coding assistant, workin
 6. **Hardening.** Fail-fast timeouts, per-IP rate limit, a one-card grounded answer, type-checking the functions on Deno, and a browser test of the real flow.
 7. **Evaluation and fix.** A reproducible comparison on 42 photos, a classifier trial, then the evidence gate.
 8. **Deployment.** Web app on Vercel; first deploy failed because two environment variables were not applied at build time, which we diagnosed from the deployed code and fixed. Added model fallback after finding Google's free models can be unavailable for hours.
-9. **Documentation.** A wiki with a one-page project guide for people and AI assistants, kept in step with the code by a linter.
+9. **Follow-up chat.** A card-grounded chat so farmers can ask about the diagnosed disease: a new Edge Function, a chat panel in the app, a guard against invented numbers, a live smoke test and unit tests. Testing it in a real browser exposed three defects that were fixed (general questions wrongly claiming a diagnosis, over-listed sources, and long answers scrolling past their first line).
+10. **Documentation.** A wiki with a one-page project guide for people and AI assistants, kept in step with the code by a linter.
 
 **Lessons**
 
@@ -187,7 +195,7 @@ At the paid prices Google lists for `gemini-3.1-flash-lite` (USD 0.25 per millio
 
 Read this correctly:
 
-- Four photos is a small sample, and token use varies with the photo and prompt. Retries and fallback calls add to it.
+- Four photos is a small sample, and token use varies with the photo and prompt. Retries and fallback calls add to it. Each follow-up chat question adds one further model call, which has **not been measured**.
 - It covers only the AI calls. It excludes hosting beyond the free tiers, support, and the **real fixed costs: expert verification of every card, Bangla review, and keeping cards current.**
 - The prototype runs on free tiers at zero cost, but Google's pricing page states that **free-tier content is used to improve its products and paid-tier content is not.** A deployment that handles farmers' photos should use the paid tier, so the cost above is the relevant one for a real product.
 
@@ -248,6 +256,7 @@ Sources: the Business Standard article on blast (28 January 2024); Ansari et al.
 - Diagnostic accuracy is not established; the system is decision support that frequently says "not sure", not a diagnosis tool.
 - Cards need independent verification and Bangla review; the hispa card is missing.
 - The test set is small, studio-style and tuned on; no phone-photo or farmer testing yet.
+- The chat cannot go deeper than the short disease cards; richer answers need more verified source passages. Its answers have not been reviewed by a Bangla speaker.
 - Dependence on Google's free tier: availability, quota and terms.
 - No business validation yet; team roles to be named; demo video not yet recorded.
 
@@ -269,7 +278,7 @@ Sources: the Business Standard article on blast (28 January 2024); Ansari et al.
 
 ```text
 app/        React web app (single page)
-supabase/   migrations, seed.sql (disease cards), functions: diagnose, embed-cards, _shared
+supabase/   migrations, seed.sql (disease cards), functions: diagnose, chat, embed-cards, _shared
 eval/       evaluation scripts and saved results (no photos)
 docs/       wiki: project guide, architecture, prompts, evaluation, setup, submission checklist
 AGENTS.md   short instructions for AI coding assistants

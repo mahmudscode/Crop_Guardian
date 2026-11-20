@@ -20,6 +20,7 @@ The design refuses to guess: it shows only advice a source card supports, and ke
 | Photo privacy | Photo processed in memory, not stored; no account needed for the demo |
 | Data ownership | Knowledge base is open, cited agronomy text; no farmer data leaves the app except the API call for analysis |
 | Language bias | Bangla-first UI and prompts; plain wording tested with a non-technical reader |
+| Chat misuse | The chat answers only from verified cards, refuses off-topic questions and requests for doses, ignores instructions inside a message, and discards any answer containing a number that is not in the cards. Questions are not stored but are sent to Google's Gemini API, like photos. Weak spot: the Bangla wording is the model's and has not been reviewed by a native speaker; answers cannot be more detailed than the short cards |
 | Out-of-scope input | Non-rice or non-plant photos rejected with a clear message |
 
 ## Congress mandatory commitments (Section 15)

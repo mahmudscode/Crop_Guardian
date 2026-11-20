@@ -7,6 +7,7 @@ sources:
   - code: supabase/functions/diagnose/index.ts
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/functions/embed-cards/index.ts
+  - code: supabase/functions/chat/index.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/App.jsx
   - code: eval/score.py
@@ -21,7 +22,7 @@ The one document to read first, for a teammate, a judge, or an AI assistant pick
 
 A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Bangla with a likely disease, what to do now, how to prevent it, a confidence badge and the cited source. If the photo is unclear, not rice, or matches no verified card, it says "not sure" and refers the farmer to the local agriculture officer.
 
-- **One core use case:** photo in, Bangla diagnosis out. Do not add features.
+- **One core use case:** photo in, Bangla diagnosis out, plus a grounded follow-up chat about the diagnosed disease ([[chat-assistant]]). It is not a general chatbot. Do not add other features.
 - **Users:** smallholder rice farmers and extension workers on basic phones and weak connections.
 - **Disease scope:** blast, bacterial leaf blight, brown spot, sheath blight, tungro (5 have cards) and hispa (an insect pest, card still missing).
 - **AI approach:** a general multimodal model (Google Gemini) looks at the photo; retrieval over human-checked disease cards (RAG) supplies the advice so the model cannot invent treatments. There is no custom-trained model.
@@ -33,6 +34,7 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 |---|---|
 | Database + search (Supabase Postgres, pgvector) | Deployed and working |
 | Edge Functions `diagnose` and `embed-cards` | Deployed and working |
+| Follow-up chat | Deployed. Answers only from verified cards, refuses off-topic and dose questions; 12 of 12 live smoke checks and 5 guard unit tests pass. Depth is limited by the short cards |
 | Web app (`app/`) | Hosted on Vercel's free tier at https://crop-guardian-ten.vercel.app, talking to the deployed backend. Gemini's free models are sometimes overloaded, so it can answer "server busy" |
 | Disease cards | 5 of 6 filled from cited sources. Hispa has no source text yet. Bangla text is a Claude translation that **no native speaker has reviewed** |
 | Card verification | The pipeline only uses cards with `verified = true`. `supabase/seed.sql` ships them as `false`. The live database currently holds the 5 filled cards as `verified = true` with `verified_by = 'TEST ONLY - not human-reviewed'`. A teammate must check each card against its source and set the real values |
@@ -68,6 +70,7 @@ supabase/
   migrations/               database schema (disease_cards table, vector search function)
   seed.sql                  the 6 disease cards (names + source-based text)
   functions/diagnose/       main API
+  functions/chat/           follow-up chat: answers questions from verified cards (see chat-assistant page)
   functions/embed-cards/    admin-only: embeds cards that lack an embedding
   functions/_shared/        Gemini helpers (generate, embed), CORS
   config.toml               function settings
@@ -83,7 +86,7 @@ docs/                       wiki (this guide, architecture, prompts, evaluation,
 
 | `status` | HTTP | Meaning | Extra fields |
 |---|---|---|---|
-| `ok` | 200 | A card-backed answer | `sections` {diagnosis_bn, what_to_do_bn[], prevention_bn[]}, `answer_bn`, `confidence`, `top_candidate`, `disease_en`, `sources[]`, `observation`, `seconds` |
+| `ok` | 200 | A card-backed answer | `sections` {diagnosis_bn, what_to_do_bn[], prevention_bn[]}, `answer_bn`, `confidence`, `top_candidate`, `disease_en`, `disease_bn`, `sources[]`, `observation`, `seconds` |
 | `retry_photo` | 200 | Not rice or poor photo | `message_bn` |
 | `healthy_like` | 200 | Model sees no clear lesions | `message_bn` |
 | `low_confidence` / `no_card` | 200 | Not sure, refer to officer | `message_bn` |
@@ -92,6 +95,8 @@ docs/                       wiki (this guide, architecture, prompts, evaluation,
 | `bad_request` / `too_large` / `error` | 400 / 413 / 500 | Input or server error | `message_bn`, `detail` (short, no image data) |
 
 A request with header `x-admin-key` equal to the `ADMIN_KEY` secret skips the rate limit (used by `eval/`). `embed-cards` requires the same header.
+
+**Chat:** `POST {SUPABASE_URL}/functions/v1/chat` with `{"messages": [{"role": "user"|"assistant", "content": "..."}], "disease_en": "Blast"}` (`disease_en` optional; at most 8 messages of 400 characters, last one from the user). Returns `status` `ok` (`answer_bn`, `answered_from_card`, `disease_en[]`, `sources[]`), `no_card` (`answer_bn`), `bad_request` 400, `rate_limited` 429 (20 per 10 minutes per IP), `busy` 503 or `error` 500. Details: [[chat-assistant]].
 
 ## 6. Data model
 
@@ -105,7 +110,7 @@ Card rules: text only from the cited source; pesticide names copied exactly or l
 |---|---|---|
 | `GEMINI_API_KEY` | Supabase secret; local `.env` | **Yes** |
 | `ADMIN_KEY` | Supabase secret; local `.env` | **Yes** |
-| `GEMINI_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_EMBED_MODEL`, `SIM_THRESHOLD`, `MIN_MATCHES`, `EVIDENCE_MIN_RATIO` | Supabase secret; local `.env` | No |
+| `GEMINI_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_EMBED_MODEL`, `CHAT_SIM_THRESHOLD`, `SIM_THRESHOLD`, `MIN_MATCHES`, `EVIDENCE_MIN_RATIO` | Supabase secret; local `.env` | No |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Injected into functions by Supabase | **Service role key: yes** |
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | `app/.env` | Anon key is public by design |
 | Supabase access token (`sbp_...`), database password | Your own login / password manager | **Yes** |
@@ -129,6 +134,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 |---|---|
 | Run the web app | `cd app && npm run dev` |
 | Build the web app | `cd app && npm run build` |
+| Chat safety checks | `python3 -I eval/chat_smoke.py .env` (live) and `npx deno test supabase/functions/_shared/numbers_test.ts` |
 | Type-check functions | `npx deno check supabase/functions/diagnose/index.ts` (Edge Functions run on Deno, not Node, so VS Code may show false errors without the Deno extension) |
 | Apply database changes | `npx supabase db push --remote` |
 | Deploy a function | `npx supabase functions deploy diagnose --remote=<ref> --use-api --yes` |
@@ -139,7 +145,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 ## 10. Rules for anyone (human or AI) changing this repo
 
 - Treatment advice comes only from verified, cited cards. Never invent a pesticide, a dose or a source.
-- Keep one core use case. Do not add accounts, storage of photos, or extra features.
+- Keep one core use case: photo to Bangla diagnosis, plus the grounded follow-up chat. The chat must stay card-grounded (never a general chatbot). Do not add accounts, storage of photos or conversations, or other features.
 - Never commit secrets. Keys live in Supabase secrets and local `.env` files.
 - Report only measured evaluation numbers. Re-run the evaluation after changing a prompt or the model.
 - Bangla text from a machine needs a native reader before it is called reviewed.
@@ -157,7 +163,8 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 ## 12. Open work, by priority
 
 1. The over-confidence gate reduced wrong answers but not the model's inability to tell diseases apart; next: fresh photos, a stronger or fine-tuned vision component, and re-measure.
-2. Measure accuracy on 10 to 15 expert-labelled rice photos from a licensed dataset, ideally also phone photos from a real field; fill `docs/operations/evaluation.md`.
+2. Deepen the chat: add more source passages to the cards (life cycle, favouring conditions, management), each checked against its source, so answers can go beyond the short card text.
+3. Measure accuracy on 10 to 15 expert-labelled rice photos from a licensed dataset, ideally also phone photos from a real field; fill `docs/operations/evaluation.md`.
 3. Verify the cards against their sources (a teammate) and have a Bangla reader review the translations; write the hispa card from a real source.
 4. (Done) Web app hosted on Vercel; keep an eye on Gemini availability before the demo and have a recorded video as a fallback.
 5. Record the 180-second video (`docs/operations/demo-script.md`).
