@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/embed.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: 47de279
+verified_at: 849639a
 ---
 
 # Diagnose pipeline
@@ -31,3 +31,5 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 > ⚠️ The vision output is parsed by slicing from the first `{` to the last `}`; malformed JSON throws and returns `status: "error"`. Keep the vision prompt asking for JSON only.
 
 > ⚠️ `diagnose` has `verify_jwt = false` (`supabase/config.toml`) for the no-account demo, so anyone with the URL can spend API credit. Add rate limiting before a public launch. `embed-cards` is guarded by the `x-admin-key` header instead.
+
+> ⚠️ A Voyage account with no payment method is limited to 3 requests per minute (HTTP 429). `embed-cards` therefore embeds at most 3 cards per call, pausing 21 s between them (`supabase/functions/embed-cards/index.ts`); call it repeatedly until it returns `embedded: 0`. `diagnose` also embeds once per request (`supabase/functions/_shared/embed.ts` retries after 21 s), so under that limit a demo can stall. Add a payment method on Voyage before recording.
