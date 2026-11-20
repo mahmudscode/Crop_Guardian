@@ -5,8 +5,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export class GeminiBusyError extends Error {}
 
-// Fail fast: 30 s timeout per call, one short retry on 429/503, then give up (the app shows a "busy, try again" message).
-async function post(url: string, body: unknown): Promise<Response> {
+// Fail fast: 25 s timeout per call. With fallback models available a busy model is skipped immediately;
+// otherwise one short retry on 429/503. A GeminiBusyError tells the caller to show "busy, try again".
+async function post(url: string, body: unknown, retries = 1): Promise<Response> {
   for (let attempt = 0; ; attempt++) {
     let res: Response | null = null;
     try {
@@ -14,13 +15,15 @@ async function post(url: string, body: unknown): Promise<Response> {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": key() },
         body: JSON.stringify(body),
-        signal: AbortSignal.timeout(30_000),
+        signal: AbortSignal.timeout(25_000),
       });
     } catch {
       throw new GeminiBusyError("gemini timeout");
     }
+    // 404 = the model name is closed or renamed for this account: skip it like a busy model
+    if (res.status === 404) throw new GeminiBusyError("gemini model not found 404");
     if (res.status === 429 || res.status === 503) {
-      if (attempt < 1) { await sleep(res.status === 429 ? 8_000 : 2_000); continue; }
+      if (attempt < retries) { await sleep(res.status === 429 ? 8_000 : 2_000); continue; }
       throw new GeminiBusyError(`gemini busy ${res.status}`);
     }
     return res;
@@ -29,21 +32,44 @@ async function post(url: string, body: unknown): Promise<Response> {
 
 export type Part = { text: string } | { inline_data: { mime_type: string; data: string } };
 
+// Free-tier models are sometimes overloaded or out of quota for hours, so a list of fallbacks is tried in order.
+// Different models can behave differently: the evaluation numbers in docs/operations/evaluation.md are for the primary only.
+function modelChain(): string[] {
+  const primary = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite";
+  const fallbacks = (Deno.env.get("GEMINI_FALLBACK_MODELS") ?? "gemini-3.5-flash-lite,gemini-flash-lite-latest")
+    .split(",").map((m) => m.trim()).filter((m) => m && m !== primary);
+  return [primary, ...fallbacks];
+}
+
+export async function generateWithModel(parts: Part[], opts: { json?: boolean; maxTokens?: number } = {}): Promise<{ text: string; model: string }> {
+  const chain = modelChain();
+  let lastBusy: GeminiBusyError | null = null;
+  for (let i = 0; i < chain.length; i++) {
+    const model = chain[i];
+    try {
+      const res = await post(`${BASE}/${model}:generateContent`, {
+        contents: [{ role: "user", parts }],
+        generationConfig: {
+          maxOutputTokens: opts.maxTokens ?? 4096,
+          temperature: 0.2,
+          ...(opts.json ? { responseMimeType: "application/json" } : {}),
+        },
+      }, i < chain.length - 1 ? 0 : 1);
+      if (!res.ok) throw new Error(`gemini generate ${res.status}`);
+      const j = await res.json();
+      const text = j.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? "").join("") ?? "";
+      if (!text) throw new Error("gemini returned no text");
+      return { text, model };
+    } catch (e) {
+      if (e instanceof GeminiBusyError) { lastBusy = e; continue; }
+      throw e;
+    }
+  }
+  throw lastBusy ?? new GeminiBusyError("gemini busy");
+}
+
 export async function generate(parts: Part[], opts: { json?: boolean; maxTokens?: number } = {}): Promise<string> {
-  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite";
-  const res = await post(`${BASE}/${model}:generateContent`, {
-    contents: [{ role: "user", parts }],
-    generationConfig: {
-      maxOutputTokens: opts.maxTokens ?? 4096,
-      temperature: 0.2,
-      ...(opts.json ? { responseMimeType: "application/json" } : {}),
-    },
-  });
-  if (!res.ok) throw new Error(`gemini generate ${res.status}`);
-  const j = await res.json();
-  const text = j.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? "").join("") ?? "";
-  if (!text) throw new Error("gemini returned no text");
-  return text;
+  return (await generateWithModel(parts, opts)).text;
 }
 
 export const EMBED_DIMS = 1024; // must equal vector(1024) in the migration

@@ -62,3 +62,12 @@ Then follow [[evaluation]] and re-tune `SIM_THRESHOLD`, `MIN_MATCHES` and `EVIDE
 ## Notes
 - `diagnose` has `verify_jwt = false` for the no-account demo. Add rate limiting before any public launch to protect API spend.
 - Confirm current Gemini model names, and the free-tier rate limits, before deploying.
+
+## 5. Deploy the web app on Vercel (free)
+1. At vercel.com, sign in with GitHub, **Add New > Project**, import the repo.
+2. **Root Directory:** `app`. Framework: Vite. Build `npm run build`, output `dist`.
+3. **Settings > Environment Variables** (not the "Environments" page, which only manages deployment targets and offers paid extras): add `VITE_SUPABASE_URL` (`https://<ref>.supabase.co`) and `VITE_SUPABASE_ANON_KEY` (the public anon key), for Production. Vercel warns that `VITE_` values are exposed to the browser; both are meant to be public, so choose **Change to Config**. Do not remove the prefix.
+4. **Redeploy** (Deployments > three dots > Redeploy, build cache off). Variables are baked in at build time.
+5. Check: the new JavaScript file name differs, contains your `https://<ref>.supabase.co`, and a test photo returns an answer.
+
+> ⚠️ Traps hit on the first deploy: (a) with the variables missing, the page loads but every diagnosis fails with the Bangla "internet problem" message, because the code posts to `undefined/functions/v1/diagnose` (a 404 on the Vercel site); (b) pasting the anon key from a code block can add a trailing newline (shown as a small arrow in the box), which can break the Authorization header: delete it before saving; (c) adding variables without redeploying changes nothing.

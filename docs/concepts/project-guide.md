@@ -33,7 +33,7 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 |---|---|
 | Database + search (Supabase Postgres, pgvector) | Deployed and working |
 | Edge Functions `diagnose` and `embed-cards` | Deployed and working |
-| Web app (`app/`) | Works locally against the deployed backend, **not hosted publicly yet** |
+| Web app (`app/`) | Hosted on Vercel's free tier at https://crop-guardian-ten.vercel.app, talking to the deployed backend. Gemini's free models are sometimes overloaded, so it can answer "server busy" |
 | Disease cards | 5 of 6 filled from cited sources. Hispa has no source text yet. Bangla text is a Claude translation that **no native speaker has reviewed** |
 | Card verification | The pipeline only uses cards with `verified = true`. `supabase/seed.sql` ships them as `false`. The live database currently holds the 5 filled cards as `verified = true` with `verified_by = 'TEST ONLY - not human-reviewed'`. A teammate must check each card against its source and set the real values |
 | Accuracy | **Not yet measured properly.** An informal 42-photo test found the first version named a disease for most leaves. An evidence gate cut wrong answers shown from 30 to 14 and stopped false alarms on healthy leaves, but correct detections fell from 5 to 2 of 12 and about 88% of the answers still shown are wrong. Tuned on the same photos, so optimistic. Details in `docs/operations/evaluation.md`. Do not quote any accuracy figure from it |
@@ -105,7 +105,7 @@ Card rules: text only from the cited source; pesticide names copied exactly or l
 |---|---|---|
 | `GEMINI_API_KEY` | Supabase secret; local `.env` | **Yes** |
 | `ADMIN_KEY` | Supabase secret; local `.env` | **Yes** |
-| `GEMINI_MODEL`, `GEMINI_EMBED_MODEL`, `SIM_THRESHOLD`, `MIN_MATCHES`, `EVIDENCE_MIN_RATIO` | Supabase secret; local `.env` | No |
+| `GEMINI_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_EMBED_MODEL`, `SIM_THRESHOLD`, `MIN_MATCHES`, `EVIDENCE_MIN_RATIO` | Supabase secret; local `.env` | No |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Injected into functions by Supabase | **Service role key: yes** |
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | `app/.env` | Anon key is public by design |
 | Supabase access token (`sbp_...`), database password | Your own login / password manager | **Yes** |
@@ -159,7 +159,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 1. The over-confidence gate reduced wrong answers but not the model's inability to tell diseases apart; next: fresh photos, a stronger or fine-tuned vision component, and re-measure.
 2. Measure accuracy on 10 to 15 expert-labelled rice photos from a licensed dataset, ideally also phone photos from a real field; fill `docs/operations/evaluation.md`.
 3. Verify the cards against their sources (a teammate) and have a Bangla reader review the translations; write the hispa card from a real source.
-4. Host the web app publicly (Vercel, Netlify or Cloudflare Pages) so judges can open it without login.
+4. (Done) Web app hosted on Vercel; keep an eye on Gemini availability before the demo and have a recorded video as a fallback.
 5. Record the 180-second video (`docs/operations/demo-script.md`).
 6. Write the business value / monetization note and add it to the pitch.
 7. Housekeeping: revoke any access token or password that was pasted in chat; confirm the submission cutoff time on the portal (the guide says the preliminary submission closes 2026-11-20).

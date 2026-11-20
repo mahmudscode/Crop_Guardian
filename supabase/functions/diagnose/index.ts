@@ -2,7 +2,7 @@
 // The photo is processed in memory only and never stored.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
-import { embed, generate, GeminiBusyError, type Part } from "../_shared/gemini.ts";
+import { embed, generateWithModel, GeminiBusyError, type Part } from "../_shared/gemini.ts";
 
 // Evidence gate (replaces the model's self-reported confidence, which did not separate right from wrong answers):
 // a disease is only offered if >= MIN_MATCHES features from its card are visibly present AND
@@ -66,9 +66,9 @@ async function knownCards(db: any) {
   return knownCache.rows;
 }
 
-// `model` is included in every response so evaluation results record which Gemini model produced them.
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify({ ...(body as object), model: Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite" }), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+// `model` is included in every response so evaluation results record which Gemini model actually answered.
+const baseJson = (body: unknown, status: number, model: string) =>
+  new Response(JSON.stringify({ ...(body as object), model }), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
 const RETRY_MSG_BN = "ছবিটি পরিষ্কার নয় বা ধান গাছের পাতা নয়। অনুগ্রহ করে আরেকটি পরিষ্কার ছবি তুলুন।";
 const ERROR_MSG_BN = "কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।";
@@ -80,6 +80,8 @@ const OFFICER_MSG_BN = "আমি নিশ্চিত নই। অনুগ�
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   const t0 = Date.now();
+  let modelUsed = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite"; // updated to the model that really answered
+  const json = (body: unknown, status = 200) => baseJson(body, status, modelUsed);
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim();
   // The ADMIN_KEY header skips the per-IP limit so the evaluation script can run its photo set.
   const isAdmin = !!Deno.env.get("ADMIN_KEY") && req.headers.get("x-admin-key") === Deno.env.get("ADMIN_KEY");
@@ -96,10 +98,12 @@ Deno.serve(async (req) => {
     if (!known.length) return json({ status: "no_card", message_bn: OFFICER_MSG_BN, seconds: (Date.now() - t0) / 1000 });
 
     // 1. Observe (candidates limited to diseases we have verified cards for)
-    const raw = await generate(
+    const vision = await generateWithModel(
       [{ inline_data: { mime_type: media_type, data: image_base64 } }, { text: visionPrompt(known) }] as Part[],
       { json: true },
     );
+    modelUsed = vision.model;
+    const raw = vision.text;
     const obs = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1));
     const names = new Set(known.map((k) => k.disease_name_en.toLowerCase()));
     const strs = (v: unknown): string[] => (Array.isArray(v) ? v.map(String).filter(Boolean) : []);
@@ -144,10 +148,11 @@ Deno.serve(async (req) => {
 
     // 3. Answer (grounded): the model must pick ONE card; only that card's source is shown.
     const slim = cards.map((c: Record<string, unknown>) => { const { embedding: _e, ...rest } = c; return rest; });
-    const raw2 = await generate(
+    const answer = await generateWithModel(
       [{ text: `${ANSWER_PROMPT}\n\n[likely disease]\n${top.name_en}\n\n[disease cards]\n${JSON.stringify(slim)}\n\n[symptom JSON]\n${JSON.stringify(obs)}` }],
       { json: true },
     );
+    const raw2 = answer.text;
     const ans = JSON.parse(raw2.slice(raw2.indexOf("{"), raw2.lastIndexOf("}") + 1));
     const chosen = cards.find((c: { disease_name_en: string }) => c.disease_name_en === ans.disease_en);
     const list = (v: unknown): string[] => (Array.isArray(v) ? v.map(String).filter(Boolean) : []);

@@ -4,6 +4,8 @@
 
 Built for the International AI Builders Congress (AIBC) 2026, AgriSphere AI challenge area "Crop Guardian" (early pest and disease detection from imagery, with local-language UX).
 
+**Live app:** https://crop-guardian-ten.vercel.app (free Vercel hosting; the backend runs on free Supabase and Gemini tiers, so it can be slow or say "server busy" when Google's free models are overloaded).
+
 > **New here (teammate, judge, or AI assistant)? Read [`docs/concepts/project-guide.md`](docs/concepts/project-guide.md) first.** It covers what the project is, current status, how it works, how to run it, and the rules for changing it.
 
 ## What it does
@@ -57,7 +59,7 @@ Backend setup and deployment: [`docs/operations/setup.md`](docs/operations/setup
 
 ## Honest status
 
-- **Working:** database, search, both Edge Functions and the web app run end to end against a deployed Supabase project; the app is not hosted publicly yet.
+- **Working:** database, search, both Edge Functions and the web app run end to end against a deployed Supabase project; the web app is hosted on Vercel's free tier (link above).
 - **Cards:** 5 of 6 are written from cited sources (IRRI, Pacific Pests, Pathogens and Weeds). The Bangla text is a machine translation that still needs a native reader, and cards still need human verification against their sources.
 - **Accuracy is not yet established.** An informal 42-photo comparison (see [`docs/operations/evaluation.md`](docs/operations/evaluation.md)) found the pipeline over-confident: it named a disease for most leaves, including ones we have no card for. We report only measured numbers and do not claim an accuracy figure.
 - **Privacy:** photos are not stored by this project, but they are sent to Google's Gemini API for analysis.
