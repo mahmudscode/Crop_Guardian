@@ -77,6 +77,7 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error(e); // never log image data
-    return json({ status: "error", message_bn: RETRY_MSG_BN }, 500);
+    // detail carries only our own short error text (e.g. "gemini generate 503"), never image data
+    return json({ status: "error", message_bn: RETRY_MSG_BN, detail: e instanceof Error ? e.message.slice(0, 120) : "unknown" }, 500);
   }
 });

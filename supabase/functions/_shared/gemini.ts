@@ -19,7 +19,7 @@ async function post(url: string, body: unknown): Promise<Response> {
 export type Part = { text: string } | { inline_data: { mime_type: string; data: string } };
 
 export async function generate(parts: Part[], opts: { json?: boolean; maxTokens?: number } = {}): Promise<string> {
-  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.5-flash";
+  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite";
   const res = await post(`${BASE}/${model}:generateContent`, {
     contents: [{ role: "user", parts }],
     generationConfig: {
