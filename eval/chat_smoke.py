@@ -1,5 +1,7 @@
 """Smoke test for the follow-up chat: grounding, refusals, prompt injection, dose requests, input validation.
-Usage: python3 -I eval/chat_smoke.py <env_file>      (needs ADMIN_KEY in the env file to skip the rate limit)
+Usage: python3 -I eval/chat_smoke.py <env_file> [--depth]
+--depth adds checks that need REVIEWED (verified) source passages in the database: the answer must use a passage (its source shows a section) and quote its numbers.
+Needs ADMIN_KEY in the env file to skip the rate limit.
 Prints one line per case and a PASS/FAIL summary. These are checks of safe behaviour on a few cases, not an accuracy measure."""
 import json, re, sys, urllib.error, urllib.request
 
@@ -32,6 +34,18 @@ CASES = [
     ("bad input: 401-char message", U("ক" * 401), None, lambda c, j: c == 400),
     ("bad input: invalid JSON", None, None, lambda c, j: c == 400),
 ]
+
+nums = lambda t: set(re.findall(r"\d+", (t or "").translate(str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789"))))
+used_passage = lambda j: any(s.get("page") for s in (j.get("sources") or []))   # passages carry a source section, cards do not
+DEPTH = [
+    ("depth: Blast weather (24-28 C from a passage)", U("কোন আবহাওয়ায় ব্লাস্ট বেশি হয়?"), "Blast", lambda c, j: c == 200 and used_passage(j) and {"24", "28"} <= nums(j.get("answer_bn"))),
+    ("depth: Tungro vector timing (10-30 minutes from a passage)", U("টুংরো রোগের পোকা কতক্ষণে ভাইরাস নিতে পারে?"), "Tungro", lambda c, j: c == 200 and used_passage(j) and {"10", "30"} <= nums(j.get("answer_bn"))),
+    ("depth: Sheath blight nitrogen advice (a passage is used)", U("নাইট্রোজেন সার নিয়ে কী করব?"), "Sheath blight", lambda c, j: c == 200 and j.get("answered_from_card") is True and used_passage(j)),
+    ("depth: Bacterial leaf blight survival (a passage is used)", U("ব্যাকটেরিয়া মাটিতে কতদিন বেঁচে থাকে?"), "Bacterial leaf blight", lambda c, j: c == 200 and j.get("answered_from_card") is True and used_passage(j)),
+    ("depth: no diagnosis, asks about tungro spread", U("টুংরো কীভাবে ছড়ায়?"), None, lambda c, j: c == 200 and "Tungro" in (j.get("disease_en") or []) and used_passage(j)),
+]
+if "--depth" in sys.argv:
+    CASES = CASES + DEPTH
 
 passed = 0
 for name, msgs, disease, check in CASES:

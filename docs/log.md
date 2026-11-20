@@ -24,3 +24,7 @@ Append-only. Newest entries at the bottom.
 ## [2026-11-20] chat | added a card-grounded follow-up chat
 
 - New `chat` Edge Function, chat panel in the app, number guard, smoke test and unit tests. See [[chat-assistant]].
+
+## [2026-11-20] passages | 52 source passages added for a deeper chat
+
+- New `disease_passages` table, seed, retrieval in the chat, review sheet. Passages are unverified, so the chat does not use them yet. See [[chat-assistant]] and [[passage-review]].

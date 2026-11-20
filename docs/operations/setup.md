@@ -39,7 +39,8 @@ verified_at: 881d68c
    ```bash
    curl -X POST https://<ref>.supabase.co/functions/v1/embed-cards -H "x-admin-key: $ADMIN_KEY"
    ```
-   Re-run after editing any card (set `embedding = null` on edited rows first).
+   The same call embeds the source passages (25 per call; repeat until it returns zeros). Re-run after editing any card or passage (set `embedding = null` on edited rows first).
+4. Load the source passages for the chat: `supabase db query --remote -f supabase/seed_passages.sql`, then embed them as above. They stay unused until a person verifies them (see [[passage-review]]).
 
 ## 3. Web app (`app/`)
 ```bash

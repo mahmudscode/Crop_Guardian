@@ -48,6 +48,7 @@ To run or deploy: [[setup]]. To submit to the hackathon: [[submission-checklist]
 ## operations
 
 - [[setup]] -- Supabase and web app setup
+- [[passage-review]] -- checklist for verifying the source passages before the chat may use them
 - [[evaluation]] -- metrics, protocol, results so far
 - [[demo-script]] -- the 180-second video pitch
 - [[submission-checklist]] -- hackathon requirements mapped to this project

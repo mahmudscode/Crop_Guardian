@@ -34,7 +34,7 @@ A Bangladeshi rice farmer photographs a sick leaf. The app replies in simple Ban
 |---|---|
 | Database + search (Supabase Postgres, pgvector) | Deployed and working |
 | Edge Functions `diagnose` and `embed-cards` | Deployed and working |
-| Follow-up chat | Deployed. Answers only from verified cards, refuses off-topic and dose questions; 12 of 12 live smoke checks and 5 guard unit tests pass. Depth is limited by the short cards |
+| Follow-up chat | Deployed; its depth now comes from 52 source passages that are loaded but **not yet verified, so unused**. Cards-only behaviour is live. Answers only from verified cards, refuses off-topic and dose questions; 12 of 12 live smoke checks and 5 guard unit tests pass. Depth is limited by the short cards |
 | Web app (`app/`) | Hosted on Vercel's free tier at https://crop-guardian-ten.vercel.app, talking to the deployed backend. Gemini's free models are sometimes overloaded, so it can answer "server busy" |
 | Disease cards | 5 of 6 filled from cited sources. Hispa has no source text yet. Bangla text is a Claude translation that **no native speaker has reviewed** |
 | Card verification | The pipeline only uses cards with `verified = true`. `supabase/seed.sql` ships them as `false`. The live database currently holds the 5 filled cards as `verified = true` with `verified_by = 'TEST ONLY - not human-reviewed'`. A teammate must check each card against its source and set the real values |
@@ -69,6 +69,7 @@ app/                        React + Vite + Tailwind web app (Bangla UI)
 supabase/
   migrations/               database schema (disease_cards table, vector search function)
   seed.sql                  the 6 disease cards (names + source-based text)
+  seed_passages.sql         52 source passages that give the chat depth (unverified until reviewed)
   functions/diagnose/       main API
   functions/chat/           follow-up chat: answers questions from verified cards (see chat-assistant page)
   functions/embed-cards/    admin-only: embeds cards that lack an embedding
@@ -100,7 +101,7 @@ A request with header `x-admin-key` equal to the `ADMIN_KEY` secret skips the ra
 
 ## 6. Data model
 
-Table `disease_cards`: `id`, `crop`, `disease_name_en`, `disease_name_bn`, `symptoms_en`, `symptoms_bn`, `cause`, `treatment_bn`, `prevention_bn`, `severity_note`, `source_name`, `source_url`, `source_page`, `verified`, `verified_by`, `embedding vector(1024)`. Row level security lets anyone read only `verified` cards; writes need the service role. Function `match_disease_cards(query_embedding, match_count, min_similarity)` returns the nearest verified cards.
+Table `disease_passages` (extra source facts for the chat: `disease_name_en`, `topic`, `passage_en`, source name/URL/section, `verified`, `verified_by`, `embedding`) works like the cards: only verified rows are visible. Table `disease_cards`: `id`, `crop`, `disease_name_en`, `disease_name_bn`, `symptoms_en`, `symptoms_bn`, `cause`, `treatment_bn`, `prevention_bn`, `severity_note`, `source_name`, `source_url`, `source_page`, `verified`, `verified_by`, `embedding vector(1024)`. Row level security lets anyone read only `verified` cards; writes need the service role. Function `match_disease_cards(query_embedding, match_count, min_similarity)` returns the nearest verified cards.
 
 Card rules: text only from the cited source; pesticide names copied exactly or left out; never a dose from memory; a teammate verifies each card. Details in `docs/subsystems/knowledge-base.md`.
 
@@ -163,7 +164,7 @@ Privacy note: photos are not stored by us, but they are sent to Google's Gemini 
 ## 12. Open work, by priority
 
 1. The over-confidence gate reduced wrong answers but not the model's inability to tell diseases apart; next: fresh photos, a stronger or fine-tuned vision component, and re-measure.
-2. Deepen the chat: add more source passages to the cards (life cycle, favouring conditions, management), each checked against its source, so answers can go beyond the short card text.
+2. Have a teammate verify the 52 source passages with `docs/operations/passage-review.md` (needs the sources open), then the chat can use them; add hispa passages once a source is found.
 3. Measure accuracy on 10 to 15 expert-labelled rice photos from a licensed dataset, ideally also phone photos from a real field; fill `docs/operations/evaluation.md`.
 3. Verify the cards against their sources (a teammate) and have a Bangla reader review the translations; write the hispa card from a real source.
 4. (Done) Web app hosted on Vercel; keep an eye on Gemini availability before the demo and have a recorded video as a fallback.

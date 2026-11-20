@@ -6,6 +6,7 @@ updated: 2026-11-20
 sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: supabase/seed.sql
+  - code: supabase/seed_passages.sql
 verified_at: 4d9c993
 ---
 
@@ -66,3 +67,8 @@ BRRI Rice Knowledge Bank and Bangla leaflets, DAE guides, IRRI Rice Knowledge Ba
 | Sheath blight | IRRI Rice Diseases (2018), Sec 1 Ch 3 | | no (Bangla translation by Claude, needs native review) |
 | Tungro | IRRI Rice Diseases (2018), Sec 3 Ch 1 | | no (Bangla translation by Claude, needs native review) |
 | Hispa | NOT YET SOURCED | | no |
+
+## Source passages (depth for the chat)
+Alongside the cards, `disease_passages` holds short, faithful restatements of facts from cited source sections (hosts, survival and spread, favouring conditions, impact, identification, management), each with `source_name`, `source_url` and `source_section`. They are embedded and retrieved per question by the follow-up chat ([[chat-assistant]]). Rules are the cards' rules: only what the source says, no dose from memory, numbers exactly as written, and **not used until a person verifies them** (`verified`, `verified_by`). The seed is `supabase/seed_passages.sql`; the checklist for the person who verifies is [[passage-review]].
+
+> ⚠️ Load passages with `supabase db query --remote -f supabase/seed_passages.sql`, then call the `embed-cards` function until it returns zeros (it embeds 25 passages per call). Re-running the seed inserts duplicates; to replace passages, delete the disease's rows first.
