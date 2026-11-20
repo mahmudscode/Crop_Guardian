@@ -49,9 +49,9 @@ BRRI Rice Knowledge Bank and Bangla leaflets, DAE guides, IRRI Rice Knowledge Ba
 ## Card review log
 | Disease | Source | Reviewer | Verified |
 |---|---|---|---|
-| Blast | | | no |
-| Bacterial leaf blight | | | no |
-| Brown spot | | | no |
-| Sheath blight | | | no |
-| Tungro | | | no |
-| Hispa | | | no |
+| Blast | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
+| Bacterial leaf blight | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
+| Brown spot | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
+| Sheath blight | NOT YET SOURCED (IRRI KB unreachable) | | no |
+| Tungro | NOT YET SOURCED | | no |
+| Hispa | NOT YET SOURCED | | no |
