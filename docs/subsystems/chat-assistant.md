@@ -10,7 +10,7 @@ sources:
   - code: app/src/App.jsx
   - code: app/src/api.js
   - code: eval/chat_smoke.py
-verified_at: HEAD_PLACEHOLDER
+verified_at: 1421a00
 ---
 
 # Follow-up chat

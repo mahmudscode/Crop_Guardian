@@ -11,7 +11,7 @@ sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/App.jsx
   - code: eval/score.py
-verified_at: b055daf
+verified_at: 1421a00
 ---
 
 # Crop Guardian: project guide

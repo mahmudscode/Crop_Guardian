@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: supabase/functions/diagnose/index.ts
   - code: docs/source-material/AIBC_Participants_Guide.pdf
-verified_at: 76d2379
+verified_at: 1421a00
 ---
 
 # Safeguards, privacy and data sovereignty
