@@ -5,7 +5,7 @@ created: 2026-11-20
 updated: 2026-11-20
 sources:
   - code: docs/source-material/AIBC_Participants_Guide.pdf
-verified_at: 4d9c993
+verified_at: b055daf
 ---
 
 # Submission checklist (AIBC 2026)
