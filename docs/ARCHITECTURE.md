@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    F[Farmer photo<br/>Lovable mobile UI] --> E[Supabase Edge Function<br/>in-memory only]
+    F[Farmer photo<br/>React mobile web UI] --> E[Supabase Edge Function<br/>in-memory only]
     E --> V[Claude vision<br/>symptom JSON]
     V --> Q[Embed symptoms + candidates<br/>Bangla and English]
     Q --> P[(pgvector<br/>disease cards)]
@@ -31,7 +31,7 @@ An answer is only shown with a source and a confidence level.
 ## Components
 | Component | Responsibility |
 |---|---|
-| Lovable UI | Upload screen, Bangla result card, confidence badge, "ask an officer" fallback |
+| React web app (`app/`) | Upload screen, Bangla result card, confidence badge, "ask an officer" fallback |
 | Edge Function | Orchestrates vision, retrieval, answer; holds API keys |
 | Postgres + pgvector | Disease cards and embeddings |
 | Claude API | Vision observation and grounded Bangla answer |

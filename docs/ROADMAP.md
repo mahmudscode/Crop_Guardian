@@ -7,4 +7,4 @@ For the pitch, not for the hackathon build.
 - Offline-first mobile app with cached cards
 - Partnership with DAE extension offices so officers can review flagged cases (human in the loop)
 - Expand to other countries by swapping the card set and language
-- Serverless Supabase + Lovable hosting scales with usage; no servers to manage
+- Serverless Supabase + static web hosting scales with usage; no servers to manage

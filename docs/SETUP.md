@@ -1,4 +1,4 @@
-# Setup: Supabase + Lovable
+# Setup: Supabase + web app
 
 ## 1. Supabase
 1. Create a project at supabase.com. Note the project ref.
@@ -28,10 +28,15 @@
    ```
    Re-run after editing any card (set `embedding = null` on edited rows first).
 
-## 3. Lovable
-1. Create a new Lovable project, connect your Supabase project.
-2. Paste the prompt from [lovable/LOVABLE_PROMPT.md](../lovable/LOVABLE_PROMPT.md).
-3. Test with a leaf photo end to end.
+## 3. Web app (`app/`)
+```bash
+cd app
+cp .env.example .env     # set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (Project Settings > API)
+npm install
+npm run dev              # local; open on a phone-width viewport
+npm run build            # outputs app/dist for static hosting
+```
+Deploy `app/dist` to Vercel, Netlify or Cloudflare Pages (set the same two env vars there). The anon key is public by design; the service role key must never go in the app.
 
 ## 4. Test
 Smoke test the function directly:

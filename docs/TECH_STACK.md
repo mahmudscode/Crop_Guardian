@@ -1,17 +1,17 @@
 # Tech Stack
 
-Follows the Congress reference architecture (Lovable UI, Supabase backend with pgvector, LLM intelligence layer): fast to build and easy to defend to judges.
+Follows the Congress reference architecture (React UI, Supabase backend with pgvector, LLM intelligence layer): fast to build and easy to defend to judges.
 
 | Layer | Choice | Why |
 |---|---|---|
-| UI | Lovable (React), mobile-first, Bangla UI strings | Fastest path to a working upload-and-chat screen; named in the guide |
+| UI | React + Vite + Tailwind (hand-built in `app/`), mobile-first, Bangla UI strings | Simple single page; full control and version history in this repo. The guide suggests Lovable but tool choice does not affect scoring |
 | Backend / API | Supabase Edge Functions | Keeps API keys server-side; one place for the pipeline |
 | Vision + reasoning | Claude (vision-capable model) via Anthropic API | Reads leaf photos and writes Bangla; no custom model training |
 | Embeddings | Multilingual embedding model (Voyage multilingual or Cohere embed-multilingual; confirm current model name) | Must match Bangla and English queries to cards |
 | Vector store | Supabase Postgres + pgvector | Same database as app data; guide-recommended |
 | Knowledge base | 6 to 30 disease cards from BRRI, DAE, IRRI, FAO sources | Small, verified, cited; quality beats volume |
 | Image storage | None by default (photo processed in memory) | Privacy and data sovereignty |
-| Hosting | Supabase + Lovable hosting (serverless) | No servers to manage; scales with usage |
+| Hosting | Supabase (backend) + Vercel or Netlify or Cloudflare Pages (static web app) | No servers to manage; free tiers; scales with usage |
 | Fallback if short on time | Python (FastAPI or Streamlit) + Chroma, run locally | Same pipeline, fewer moving parts |
 
 Rows are defaults; swap any if the team already knows another tool. If a tool other than the guide's suggestions is used, record the tool name, URL, and reason.

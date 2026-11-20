@@ -38,7 +38,7 @@ Low confidence or no matching card: the app asks for another photo and refers th
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Scalability roadmap |
 | [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md) | 3.5 hour build plan |
 | [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | 180-second video pitch script |
-| [docs/SETUP.md](docs/SETUP.md) | Supabase + Lovable setup steps |
+| [docs/SETUP.md](docs/SETUP.md) | Supabase + web app setup steps |
 | [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) | Hackathon requirements mapped to this project |
 
 Source requirement PDFs (`AIBC_Participants_Guide(1).pdf`, `Crop Guardian Tech Stack & System Architecture.pdf`) are kept in the repo root.
