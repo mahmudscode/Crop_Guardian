@@ -12,7 +12,7 @@ sources:
   - code: eval/chat_smoke.py
   - code: supabase/migrations/20261120120000_disease_passages.sql
   - code: supabase/seed_passages.sql
-verified_at: 1421a00
+verified_at: 12c50cb
 ---
 
 # Follow-up chat

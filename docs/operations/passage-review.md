@@ -5,7 +5,7 @@ created: 2026-11-20
 updated: 2026-11-20
 sources:
   - code: supabase/seed_passages.sql
-verified_at: HEAD_PLACEHOLDER
+verified_at: 12c50cb
 ---
 
 # Passage review sheet

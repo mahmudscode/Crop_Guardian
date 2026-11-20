@@ -7,7 +7,7 @@ sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: supabase/seed.sql
   - code: supabase/seed_passages.sql
-verified_at: 4d9c993
+verified_at: 12c50cb
 ---
 
 # Knowledge base (disease cards: schema, sources, rules)
