@@ -52,6 +52,6 @@ BRRI Rice Knowledge Bank and Bangla leaflets, DAE guides, IRRI Rice Knowledge Ba
 | Blast | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
 | Bacterial leaf blight | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
 | Brown spot | Pacific Pests v10 (lucidcentral), Grahame Jackson 2021 | | no (Bangla translation by Claude, needs native review) |
-| Sheath blight | NOT YET SOURCED (IRRI KB unreachable) | | no |
-| Tungro | NOT YET SOURCED | | no |
+| Sheath blight | IRRI Rice Diseases (2018), Sec 1 Ch 3 | | no (Bangla translation by Claude, needs native review) |
+| Tungro | IRRI Rice Diseases (2018), Sec 3 Ch 1 | | no (Bangla translation by Claude, needs native review) |
 | Hispa | NOT YET SOURCED | | no |
