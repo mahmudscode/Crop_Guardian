@@ -16,7 +16,7 @@ verified_at: e5d98cf
 
 The `diagnose` Edge Function turns one leaf photo into a Bangla answer in three steps: observe (Gemini vision returns symptom JSON), retrieve (embed symptoms, call `match_disease_cards` in pgvector), answer (Claude writes Bangla from the retrieved cards only). The web app calls it from `app/src/api.js` after downscaling the image to 1024px JPEG.
 
-Response `status` values: `ok`, `retry_photo` (not rice or poor photo), `low_confidence`, `no_card`, `bad_request`, `too_large`, `error`. All non-`ok` statuses carry `message_bn` and the UI shows a retry button plus an officer-contact card.
+Response `status` values: `ok`, `rate_limited`, `busy`, `retry_photo` (not rice or poor photo), `low_confidence`, `no_card`, `bad_request`, `too_large`, `error`. All non-`ok` statuses carry `message_bn` and the UI shows a retry button plus an officer-contact card.
 
 The farmer-facing safeguards are described in the root-level docs (`docs/RESPONSIBLE_AI.md`, `docs/PROMPTS.md`); this page covers the implementation.
 
@@ -32,8 +32,12 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 
 > ⚠️ `diagnose` has `verify_jwt = false` (`supabase/config.toml`) for the no-account demo, so anyone with the URL can spend API credit. Add rate limiting before a public launch. `embed-cards` is guarded by the `x-admin-key` header instead.
 
-> ⚠️ Gemini free-tier calls can return HTTP 429 when rate limited; `_shared/gemini.ts` retries twice after 15 s. The free tier has request and daily limits (unverified, check Google's page), so rate-limit `diagnose` and avoid stress-testing before the demo.
+> ⚠️ Gemini calls fail fast (`supabase/functions/_shared/gemini.ts`): 30 s timeout, one short retry on 429/503, then `GeminiBusyError` and the app shows a "busy" message. An earlier version retried for ~90 s on a 503. Free-tier request and daily limits are unverified, so avoid stress-testing before the demo.
 
 > ⚠️ Gemini model names change and old ones close to new accounts: `gemini-2.5-flash` returned 404 ("no longer available to new users"), `gemini-3.8-flash` returned 503 under load, `gemini-3.5-flash` worked for image + JSON. List the models your key can use with the `models` endpoint before changing `GEMINI_MODEL`. In zsh write `${model}:generateContent`, because `$model:g` is a history modifier and silently breaks the URL.
 
 > ⚠️ Latency depends heavily on the Gemini model: `gemini-3.5-flash` took 12 to 41 s even for a one-word prompt (measured, likely thinking time), `gemini-3.1-flash-lite` took 2 to 7 s, so `GEMINI_MODEL` defaults to flash-lite. Its accuracy on real rice photos is untested; run `docs/EVALUATION.md` before trusting it and keep the response-time KPI measured, not assumed. On failure `diagnose` returns a short `detail` string (status codes only) to help debugging.
+
+> ⚠️ The answer step must return JSON naming ONE card; `diagnose` shows only that card's source and treats an unknown name as `no_card`. Do not go back to dumping every retrieved card's source into the result (it listed unrelated diseases). The answer prompt also forbids changing a statement's subject: the first version garbled a flooding-tolerance sentence.
+
+> ⚠️ The rate limit (10 requests per 10 minutes per IP) is in-memory per function instance, so it is best-effort only and resets on cold start. It protects the free quota, not against a determined attacker. Behind shared mobile networks one IP can be many farmers; raise the limit if that bites.

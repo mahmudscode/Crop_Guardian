@@ -13,20 +13,21 @@ If the photo is not a rice plant or is unclear, say so. Do not give
 treatment.
 ```
 
-## Step 2: answer prompt (Bangla, grounded)
+## Step 2: answer prompt (Bangla, grounded; returns JSON)
 
-```
-Answer in simple Bangla for a farmer.
-Use ONLY the disease cards below. If they do not cover the case,
-say you are not sure and advise contacting the local agriculture officer.
-Format: 1) likely disease 2) what to do now 3) how to prevent it
-4) source name. Never invent a pesticide name or dose.
-[disease cards]
-[symptom JSON]
-```
+Source of truth is `ANSWER_PROMPT` in `supabase/functions/diagnose/index.ts`. Summary of its rules:
+
+- Use ONLY facts in the retrieved disease cards; do not add, infer or generalise
+- Copy product names exactly; never add a dose or a product the card lacks
+- Keep each fact's meaning exactly (found in testing: the model once turned "varieties cannot tolerate flooding" into "cannot tolerate the disease")
+- Choose ONE card; return `{"disease_en": "<chosen card or null>", "answer_bn": "..."}`
+- Format: 1) likely disease 2) what to do now 3) how to prevent it, then advise contacting the local agriculture officer if serious
+- The app, not the model, adds the source: only the chosen card's source is shown
 
 ## Routing rules (Edge Function)
 - `photo_quality == "poor"` or not rice: skip step 2, return "send another photo" message
 - Top candidate confidence below threshold (tune on test set): ask for another photo and refer to officer
 - No card above similarity threshold: say not sure, refer to officer
-- Always display confidence and source name
+- If the model picks no card, return the "not sure, contact officer" message
+- Gemini overloaded or timed out: return a "server busy, try again" message (HTTP 503); more than 10 requests per 10 minutes per IP: HTTP 429
+- Always display confidence and the chosen card's source name

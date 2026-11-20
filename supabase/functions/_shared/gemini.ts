@@ -3,15 +3,26 @@ const BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 const key = () => Deno.env.get("GEMINI_API_KEY")!;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+export class GeminiBusyError extends Error {}
+
+// Fail fast: 30 s timeout per call, one short retry on 429/503, then give up (the app shows a "busy, try again" message).
 async function post(url: string, body: unknown): Promise<Response> {
-  // Free tier returns HTTP 429 when rate limited: retry twice with a pause.
   for (let attempt = 0; ; attempt++) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": key() },
-      body: JSON.stringify(body),
-    });
-    if (res.status === 429 && attempt < 2) { await sleep(15_000); continue; }
+    let res: Response | null = null;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key() },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(30_000),
+      });
+    } catch {
+      throw new GeminiBusyError("gemini timeout");
+    }
+    if (res.status === 429 || res.status === 503) {
+      if (attempt < 1) { await sleep(res.status === 429 ? 8_000 : 2_000); continue; }
+      throw new GeminiBusyError(`gemini busy ${res.status}`);
+    }
     return res;
   }
 }
