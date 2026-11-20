@@ -28,6 +28,7 @@ verified_at: 2968829
 4. Deploy functions:
    ```bash
    supabase functions deploy diagnose --remote=<ref> --use-api --yes
+   supabase functions deploy chat --remote=<ref> --use-api --yes
    supabase functions deploy embed-cards --remote=<ref> --use-api --yes
    ```
 

@@ -44,6 +44,7 @@ An answer is only shown with a source and a confidence level.
 | Component | Responsibility |
 |---|---|
 | React web app (`app/`) | Upload screen, Bangla result card, confidence badge, "ask an officer" fallback |
+| Edge Function `chat` | Card-grounded follow-up Q&A about the diagnosed disease (see [[chat-assistant]]) |
 | Edge Function | Orchestrates vision, retrieval, answer; holds API keys |
 | Postgres + pgvector | Disease cards and embeddings |
 | Gemini API | Vision observation and grounded Bangla answer |
