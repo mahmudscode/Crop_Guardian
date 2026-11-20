@@ -1,23 +1,33 @@
-# Submission Checklist (AIBC 2026 Team-Built Product)
+---
+title: "Submission checklist (AIBC 2026)"
+type: operation
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: docs/source-material/AIBC_Participants_Guide.pdf
+verified_at: 33e0bef
+---
+
+# Submission checklist (AIBC 2026)
 
 ## Preliminary mandatory requirements
 - [ ] 3-minute structured video pitch
-- [ ] Clear problem and user definition ([PROBLEM.md](PROBLEM.md))
-- [ ] AI-native approach: LLM + RAG ([ARCHITECTURE.md](ARCHITECTURE.md))
+- [ ] Clear problem and user definition ([[problem]])
+- [ ] AI-native approach: LLM + RAG ([[system-architecture]])
 - [ ] Basic system flow: input -> AI -> output
 - [ ] Initial demo, prototype, or workflow
 - [ ] Bangla / localization
-- [ ] Defined potential impact (KPIs) ([EVALUATION.md](EVALUATION.md))
+- [ ] Defined potential impact (KPIs) ([[evaluation]])
 
 ## Submission framework (Section 9.1)
 | Component | Where |
 |---|---|
-| Problem Definition | [PROBLEM.md](PROBLEM.md) |
-| AI Architecture | [ARCHITECTURE.md](ARCHITECTURE.md), [TECH_STACK.md](TECH_STACK.md) |
-| Data & Sovereignty Strategy | [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md), [RESPONSIBLE_AI.md](RESPONSIBLE_AI.md) |
-| Demo | [DEMO_SCRIPT.md](DEMO_SCRIPT.md) |
-| Scalability Roadmap | [ROADMAP.md](ROADMAP.md) |
-| Ethical Safeguards | [RESPONSIBLE_AI.md](RESPONSIBLE_AI.md) |
+| Problem Definition | [[problem]] |
+| AI Architecture | [[system-architecture]], [[tech-stack]] |
+| Data & Sovereignty Strategy | [[knowledge-base]], [[responsible-ai]] |
+| Demo | [[demo-script]] |
+| Scalability Roadmap | [[roadmap]] |
+| Ethical Safeguards | [[responsible-ai]] |
 
 ## Judging rubric (5 x 20 = 100)
 1. Innovation and AI-native design

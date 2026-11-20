@@ -1,4 +1,14 @@
-# 180-Second Video Pitch: "Vibe to Production in 180 Seconds"
+---
+title: "180-second video pitch script"
+type: operation
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: docs/source-material/AIBC_Participants_Guide.pdf
+verified_at: 33e0bef
+---
+
+# 180-second video pitch script
 
 | Time | Segment | Show | Evaluators look for |
 |---|---|---|---|

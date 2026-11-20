@@ -8,7 +8,7 @@ Bangla rice-disease diagnosis from a leaf photo, grounded by RAG over cited dise
 - Photos are processed in memory, never stored.
 - API keys only in Supabase secrets / `.env` (git-ignored).
 - Report only measured evaluation numbers.
-- Prompts in [docs/PROMPTS.md](docs/PROMPTS.md) are the source of truth; re-run evaluation after changing them.
+- Prompts in [docs/reference/prompts.md](docs/reference/prompts.md) are the source of truth; re-run evaluation after changing them.
 
 ## Stack
 React + Vite + Tailwind UI (`app/`), Supabase Edge Functions, Google Gemini (free tier) for vision, answers and multilingual embeddings, Supabase Postgres + pgvector. Fallback: FastAPI/Streamlit + Chroma.

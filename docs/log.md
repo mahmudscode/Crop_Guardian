@@ -16,3 +16,7 @@ Append-only. Newest entries at the bottom.
 - Pre-existing flat docs (`docs/*.md` in the folder root) were left untouched; not yet split into pages.
 
 ## [2026-11-20] cards | seeded 3 of 6 disease cards from Pacific Pests v10; 3 stubs unsourced
+
+## [2026-11-20] reorganize | planning docs became wiki pages
+
+- Moved the 12 flat planning docs into category folders with frontmatter and `[[links]]`; added [[project-guide]]; moved the requirement PDFs to `docs/source-material/`; fixed `.gitignore` so `.env.example` is committed.

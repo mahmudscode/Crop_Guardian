@@ -1,5 +1,5 @@
 ---
-title: Disease cards (seed data)
+title: "Disease cards (seed data)"
 type: subsystem
 created: 2026-11-20
 updated: 2026-11-20
@@ -7,7 +7,7 @@ sources:
   - code: supabase/seed.sql
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - ext: https://apps.lucidcentral.org/pppw_v10/text/web_full/entities/
-verified_at: ea2f585
+verified_at: 33e0bef
 ---
 
 # Disease cards

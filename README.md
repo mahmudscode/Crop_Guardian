@@ -1,48 +1,81 @@
 # Crop Guardian
 
-A Bangladeshi rice farmer photographs a sick leaf and gets a **Bangla diagnosis with treatment steps**, each backed by a **cited agronomy source**.
+**A Bangladeshi rice farmer photographs a sick leaf and gets a simple Bangla diagnosis with treatment steps, each backed by a cited agronomy source. When the evidence is weak, it says "not sure" and refers the farmer to the local agriculture officer.**
 
-Built for the International AI Builders Congress 2026 (AIBC), AgriSphere AI challenge area: *Crop Guardian* (early pest and disease detection from imagery, with local-language UX; winning signal: loss reduction at the field level).
+Built for the International AI Builders Congress (AIBC) 2026, AgriSphere AI challenge area "Crop Guardian" (early pest and disease detection from imagery, with local-language UX).
 
-## At a glance
+> **New here (teammate, judge, or AI assistant)? Read [`docs/concepts/project-guide.md`](docs/concepts/project-guide.md) first.** It covers what the project is, current status, how it works, how to run it, and the rules for changing it.
+
+## What it does
 
 | | |
 |---|---|
-| **Users** | Smallholder rice farmers and field extension workers, on a basic smartphone and a weak connection |
+| **User** | Smallholder rice farmers and extension workers, on a basic phone and a weak connection |
 | **Core use case (only one)** | Photo in, Bangla diagnosis and next steps out |
-| **Scope at launch** | Rice (dhan), 6 diseases: blast, bacterial leaf blight, brown spot, sheath blight, tungro, hispa (insect pest) |
-| **AI approach** | Multimodal LLM reads symptoms, then RAG over curated disease cards grounds the advice so the model never invents treatments |
-| **KPI** | Diagnosis accuracy on a labelled test set of rice leaf photos (proxy for field-level crop-loss reduction) |
+| **Diseases** | Blast, bacterial leaf blight, brown spot, sheath blight, tungro (cards written); hispa (card still missing) |
+| **AI approach** | A multimodal model (Google Gemini) reads the photo; retrieval over human-checked disease cards (RAG) supplies the advice, so the model cannot invent treatments |
+| **Safeguards** | Only verified, cited cards can reach a farmer; not-rice or unclear photos are refused; photos are not stored by us; confidence and source are always shown |
 
-## Pipeline
+## How it works
 
+```text
+Phone photo -> React web app -> Supabase Edge Function
+   1. Gemini vision: candidates chosen ONLY from diseases that have a verified card
+   2. Embed symptoms -> pgvector search -> best matching cards
+   3. Gemini answer in Bangla, written from ONE card's text only
+-> diagnosis, what to do, prevention, source, confidence (or "not sure, ask the officer")
 ```
-Photo -> Edge Function (in memory) -> Gemini vision (symptom JSON)
-      -> embed symptoms -> pgvector top 3-5 disease cards
-      -> Gemini answer in Bangla (cards only) -> diagnosis + source + confidence
+
+Details: [`docs/architecture/system-architecture.md`](docs/architecture/system-architecture.md), prompts: [`docs/reference/prompts.md`](docs/reference/prompts.md).
+
+## Tech stack
+
+React + Vite + Tailwind (Bangla-first UI) · Supabase (Postgres + pgvector, Edge Functions on Deno) · Google Gemini (vision, answers, embeddings; free tier) · no custom-trained model. Rationale: [`docs/architecture/tech-stack.md`](docs/architecture/tech-stack.md).
+
+## Repository layout
+
+```text
+app/        React web app (single page)
+supabase/   database schema, disease cards (seed.sql), Edge Functions (diagnose, embed-cards)
+eval/       scripts and saved results for the photo comparison (no photos committed)
+docs/       wiki: guide, architecture, prompts, evaluation, setup, submission checklist
+            docs/source-material/ holds the hackathon requirement PDFs
 ```
 
-Low confidence or no matching card: the app asks for another photo and refers the farmer to the local agriculture officer.
+## Run it
 
-## Documentation
+Needs Node 20+. Teammates get the two `VITE_` values from the project owner (never from git).
 
-| Doc | Contents |
+```bash
+cd app
+cp .env.example .env      # fill VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+npm install
+npm run dev               # http://localhost:5173
+```
+
+Backend setup and deployment: [`docs/operations/setup.md`](docs/operations/setup.md). **Never commit `.env` files or keys**; `.env.example` lists the variable names only.
+
+## Honest status
+
+- **Working:** database, search, both Edge Functions and the web app run end to end against a deployed Supabase project; the app is not hosted publicly yet.
+- **Cards:** 5 of 6 are written from cited sources (IRRI, Pacific Pests, Pathogens and Weeds). The Bangla text is a machine translation that still needs a native reader, and cards still need human verification against their sources.
+- **Accuracy is not yet established.** An informal 42-photo comparison (see [`docs/operations/evaluation.md`](docs/operations/evaluation.md)) found the pipeline over-confident: it named a disease for most leaves, including ones we have no card for. We report only measured numbers and do not claim an accuracy figure.
+- **Privacy:** photos are not stored by this project, but they are sent to Google's Gemini API for analysis.
+
+## Judging criteria: where to look
+
+| Criterion | Evidence |
 |---|---|
-| [docs/PROBLEM.md](docs/PROBLEM.md) | Problem, users, impact, KPI |
-| [docs/TECH_STACK.md](docs/TECH_STACK.md) | Stack, rationale, fallback |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture and request flow |
-| [docs/KNOWLEDGE_BASE.md](docs/KNOWLEDGE_BASE.md) | Disease card schema, sources, card rules |
-| [docs/PROMPTS.md](docs/PROMPTS.md) | Vision and answer prompts |
-| [docs/RESPONSIBLE_AI.md](docs/RESPONSIBLE_AI.md) | Safeguards, privacy, data sovereignty |
-| [docs/EVALUATION.md](docs/EVALUATION.md) | Metrics and test protocol |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Scalability roadmap |
-| [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md) | 3.5 hour build plan |
-| [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | 180-second video pitch script |
-| [docs/SETUP.md](docs/SETUP.md) | Supabase + web app setup steps |
-| [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) | Hackathon requirements mapped to this project |
+| Innovation and AI-native design | Cards gate every answer; vision limited to known diseases: [project guide](docs/concepts/project-guide.md), [prompts](docs/reference/prompts.md) |
+| Technical excellence and architecture | [architecture](docs/architecture/system-architecture.md), [`supabase/functions/`](supabase/functions/), [implementation traps](docs/subsystems/diagnose-pipeline.md) |
+| Business value and viability | Not written yet (open item in the project guide) |
+| Scalability and real-world impact | [roadmap](docs/concepts/roadmap.md), [problem](docs/concepts/problem.md) |
+| Responsible AI, data sovereignty | [safeguards](docs/concepts/responsible-ai.md), [evaluation limits](docs/operations/evaluation.md) |
 
-Source requirement PDFs (`AIBC_Participants_Guide(1).pdf`, `Crop Guardian Tech Stack & System Architecture.pdf`) are kept in the repo root.
+Submission checklist: [`docs/operations/submission-checklist.md`](docs/operations/submission-checklist.md).
 
-## Status
+## Team
 
-Planning and documentation complete. Implementation follows [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md). Only report measured results; no target numbers are quoted until tested.
+| Member | Role |
+|---|---|
+| _to be filled_ | _the guide asks each role to be owned by a named member_ |

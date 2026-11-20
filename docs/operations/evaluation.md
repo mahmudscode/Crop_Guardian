@@ -1,3 +1,14 @@
+---
+title: "Evaluation and KPIs"
+type: operation
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: eval/score.py
+  - code: eval/README.md
+verified_at: 33e0bef
+---
+
 # Evaluation and KPIs
 
 Test on 10 to 15 labelled rice leaf photos before recording and report the actual numbers. Do not quote a target you have not measured.

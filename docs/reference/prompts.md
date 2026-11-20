@@ -1,3 +1,13 @@
+---
+title: "Prompts"
+type: reference
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: supabase/functions/diagnose/index.ts
+verified_at: 33e0bef
+---
+
 # Prompts
 
 Two prompts: the first only observes, the second only answers from retrieved cards. Keep in the repo; re-run evaluation after any change.

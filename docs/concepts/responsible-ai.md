@@ -1,4 +1,15 @@
-# Safeguards, Privacy and Data Sovereignty
+---
+title: "Safeguards, privacy and data sovereignty"
+type: concept
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: supabase/functions/diagnose/index.ts
+  - code: docs/source-material/AIBC_Participants_Guide.pdf
+verified_at: 33e0bef
+---
+
+# Safeguards, privacy and data sovereignty
 
 The design refuses to guess: it shows only advice a source card supports, and keeps farmer data on the farmer's side. Responsible AI is a first-class judging dimension.
 

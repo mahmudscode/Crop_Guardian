@@ -1,5 +1,5 @@
 ---
-title: Diagnose pipeline (Edge Function)
+title: "Diagnose pipeline (Edge Function)"
 type: subsystem
 created: 2026-11-20
 updated: 2026-11-20
@@ -18,7 +18,7 @@ The `diagnose` Edge Function turns one leaf photo into a Bangla answer in three 
 
 Response `status` values: `ok`, `rate_limited`, `busy`, `retry_photo` (not rice or poor photo), `low_confidence`, `no_card`, `bad_request`, `too_large`, `error`. All non-`ok` statuses carry `message_bn` and the UI shows a retry button plus an officer-contact card.
 
-The farmer-facing safeguards are described in the root-level docs (`docs/RESPONSIBLE_AI.md`, `docs/PROMPTS.md`); this page covers the implementation.
+The farmer-facing safeguards are described in the root-level docs (`docs/concepts/responsible-ai.md`, `docs/reference/prompts.md`); this page covers the implementation.
 
 > ⚠️ Only cards with `verified = true` AND a non-null `embedding` are ever retrieved (`match_disease_cards`, RLS policy). Until the six cards are source-checked, verified and embedded via `embed-cards`, every request ends in `no_card`. That is intended, not a bug.
 
@@ -26,7 +26,7 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 
 > ⚠️ `CONF_THRESHOLD` (0.5) and `SIM_THRESHOLD` (0.3) are placeholders, not measured values. Tune them on the labelled test set before quoting any result.
 
-> ⚠️ Never log or persist the image (`diagnose/index.ts` catch block logs only the error). Privacy is a stated guarantee: photo in memory only, no storage bucket.
+> ⚠️ Never log or persist the image (the catch block in `supabase/functions/diagnose/index.ts` logs only the error). Privacy is a stated guarantee: photo in memory only, no storage bucket.
 
 > ⚠️ The vision output is parsed by slicing from the first `{` to the last `}`; malformed JSON throws and returns `status: "error"`. Keep the vision prompt asking for JSON only.
 
@@ -36,13 +36,13 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 
 > ⚠️ Gemini model names change and old ones close to new accounts: `gemini-2.5-flash` returned 404 ("no longer available to new users"), `gemini-3.8-flash` returned 503 under load, `gemini-3.5-flash` worked for image + JSON. List the models your key can use with the `models` endpoint before changing `GEMINI_MODEL`. In zsh write `${model}:generateContent`, because `$model:g` is a history modifier and silently breaks the URL.
 
-> ⚠️ Latency depends heavily on the Gemini model: `gemini-3.5-flash` took 12 to 41 s even for a one-word prompt (measured, likely thinking time), `gemini-3.1-flash-lite` took 2 to 7 s, so `GEMINI_MODEL` defaults to flash-lite. Its accuracy on real rice photos is untested; run `docs/EVALUATION.md` before trusting it and keep the response-time KPI measured, not assumed. On failure `diagnose` returns a short `detail` string (status codes only) to help debugging.
+> ⚠️ Latency depends heavily on the Gemini model: `gemini-3.5-flash` took 12 to 41 s even for a one-word prompt (measured, likely thinking time), `gemini-3.1-flash-lite` took 2 to 7 s, so `GEMINI_MODEL` defaults to flash-lite. Its accuracy on real rice photos is untested; run `docs/operations/evaluation.md` before trusting it and keep the response-time KPI measured, not assumed. On failure `diagnose` returns a short `detail` string (status codes only) to help debugging.
 
 > ⚠️ The answer step must return JSON naming ONE card; `diagnose` shows only that card's source and treats an unknown name as `no_card`. Do not go back to dumping every retrieved card's source into the result (it listed unrelated diseases). The answer prompt also forbids changing a statement's subject: the first version garbled a flooding-tolerance sentence.
 
 > ⚠️ The rate limit (10 requests per 10 minutes per IP) is in-memory per function instance, so it is best-effort only and resets on cold start. It protects the free quota, not against a determined attacker. Behind shared mobile networks one IP can be many farmers; raise the limit if that bites.
 
-> ⚠️ Vision candidates are limited to diseases that have a verified, embedded card (`knownCards` in `supabase/functions/diagnose/index.ts`, cached 5 min per instance). Consequences: (1) a disease with no card (hispa) can only ever end in "not sure"; (2) new or newly verified cards appear after the cache expires; (3) the confidence value is the model's own and is poorly calibrated: a field photo labelled blast on Wikimedia came back as sheath blight at 0.85. Do not read it as a probability until tuned on labelled photos (`docs/EVALUATION.md`).
+> ⚠️ Vision candidates are limited to diseases that have a verified, embedded card (`knownCards` in `supabase/functions/diagnose/index.ts`, cached 5 min per instance). Consequences: (1) a disease with no card (hispa) can only ever end in "not sure"; (2) new or newly verified cards appear after the cache expires; (3) the confidence value is the model's own and is poorly calibrated: a field photo labelled blast on Wikimedia came back as sheath blight at 0.85. Do not read it as a probability until tuned on labelled photos (`docs/operations/evaluation.md`).
 
 > ⚠️ Test photos need trustworthy labels. The first Wikimedia "Xanthomonas" test image was an 8-panel figure of cabbage, citrus and rice, so the early "correct at 85%" result was meaningless. Wikimedia file names are crowd labels, not expert diagnoses. Use a licensed, expert-labelled dataset for the KPI numbers.
 

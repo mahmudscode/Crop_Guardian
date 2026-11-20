@@ -1,4 +1,15 @@
-# Knowledge Base
+---
+title: "Knowledge base (disease cards: schema, sources, rules)"
+type: subsystem
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: supabase/migrations/20261120000000_disease_cards.sql
+  - code: supabase/seed.sql
+verified_at: 33e0bef
+---
+
+# Knowledge base (disease cards: schema, sources, rules)
 
 One disease card per rice disease, written only from source text; each card is stored as a single chunk.
 

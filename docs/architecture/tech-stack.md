@@ -1,4 +1,15 @@
-# Tech Stack
+---
+title: "Tech stack"
+type: architecture
+created: 2026-11-20
+updated: 2026-11-20
+sources:
+  - code: app/package.json
+  - code: supabase/functions/_shared/gemini.ts
+verified_at: 33e0bef
+---
+
+# Tech stack
 
 Follows the Congress reference architecture (React UI, Supabase backend with pgvector, LLM intelligence layer): fast to build and easy to defend to judges.
 
