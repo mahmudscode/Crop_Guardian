@@ -55,8 +55,9 @@ async function knownCards(db: any) {
   return knownCache.rows;
 }
 
+// `model` is included in every response so evaluation results record which Gemini model produced them.
 const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+  new Response(JSON.stringify({ ...(body as object), model: Deno.env.get("GEMINI_MODEL") ?? "gemini-3.1-flash-lite" }), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
 const RETRY_MSG_BN = "ছবিটি পরিষ্কার নয় বা ধান গাছের পাতা নয়। অনুগ্রহ করে আরেকটি পরিষ্কার ছবি তুলুন।";
 const ERROR_MSG_BN = "কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।";

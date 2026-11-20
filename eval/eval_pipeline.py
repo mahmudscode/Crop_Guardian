@@ -1,7 +1,8 @@
-"""Send eval/<class>/*.jpg to the deployed diagnose function; write results_pipeline.json. Usage: eval_pipeline.py <eval_dir> <env_file>"""
+"""Send eval/<class>/*.jpg to the deployed diagnose function; write results_{TAG}.json. Usage: eval_pipeline.py <eval_dir> <env_file> [tag]"""
 import base64, glob, json, os, sys, time, urllib.request
 
 eval_dir, env_file = sys.argv[1], sys.argv[2]
+TAG = sys.argv[3] if len(sys.argv) > 3 else "pipeline"   # output file: results_<TAG>.json
 env = dict(l.strip().split("=", 1) for l in open(env_file) if "=" in l and not l.startswith("#"))
 URL = "https://ysxsytcnqmblsbygtaaq.supabase.co/functions/v1/diagnose"
 res = []
@@ -23,7 +24,7 @@ for p in sorted(glob.glob(f"{eval_dir}/*/*.jpg")):
     o = out.get("observation") or {}
     rec = {"file": os.path.relpath(p, eval_dir), "true": p.split("/")[-2], "status": out.get("status"),
            "disease": out.get("disease_en"), "conf": out.get("confidence"), "secs": out.get("wall"),
-           "cands": o.get("candidates"), "detail": out.get("detail")}
+           "cands": o.get("candidates"), "detail": out.get("detail"), "model": out.get("model")}
     res.append(rec); print(rec["file"].ljust(18), str(rec["status"]).ljust(15), str(rec["disease"]).ljust(22), rec["conf"], rec["secs"], flush=True)
-    json.dump(res, open(f"{eval_dir}/results_pipeline.json", "w"), indent=1)
+    json.dump(res, open(f"{eval_dir}/results_{TAG}.json", "w"), indent=1)
     time.sleep(2)

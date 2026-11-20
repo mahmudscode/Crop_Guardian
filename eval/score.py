@@ -1,6 +1,7 @@
 import json, statistics, sys
 d = sys.argv[1]
-pipe = {r["file"]: r for r in json.load(open(f"{d}/results_pipeline.json"))}
+TAG = sys.argv[2] if len(sys.argv) > 2 else "pipeline"   # which results_<TAG>.json to score
+pipe = {r["file"]: r for r in json.load(open(f"{d}/results_{TAG}.json"))}
 clf = {r["file"]: r for r in json.load(open(f"{d}/results_classifier.json"))}
 SUPPORTED = {"blast": "blast", "leaf blast": "blast", "brown spot": "brown spot", "bacterial leaf blight": "bacterial leaf blight",
              "bacterial blight": "bacterial leaf blight", "sheath blight": "sheath blight", "tungro": "tungro"}
@@ -23,7 +24,7 @@ def score(fn):
     wrong_shown = [f for f in shown if not (pipe[f]["true"] in CARD_CLASSES and fn(f) == pipe[f]["true"])]
     out["answers_shown"] = len(shown); out["wrong_answers_shown"] = len(wrong_shown)
     return out
-rows = [("Gemini pipeline (deployed)", gem), ("Classifier alone, any confidence", lambda f: cls(f, 0.0)),
+rows = [(f"Gemini pipeline ({TAG})", gem), ("Classifier alone, any confidence", lambda f: cls(f, 0.0)),
         ("Classifier, conf >= 0.5", lambda f: cls(f, 0.5)), ("Classifier, conf >= 0.7", lambda f: cls(f, 0.7)),
         ("Combined: both agree (clf >= 0.0)", lambda f: combo(f, 0.0)), ("Combined: both agree (clf >= 0.3)", lambda f: combo(f, 0.3))]
 print(f"{'method':38} {'blast+tungro right':>18} {'healthy not flagged':>20} {'no-card refused':>16} {'shown':>6} {'wrong shown':>12}")
