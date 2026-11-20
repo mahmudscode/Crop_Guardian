@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: eval/score.py
   - code: eval/README.md
-verified_at: PLACEHOLDER_SHA
+verified_at: 4d9c993
 ---
 
 # Evaluation and KPIs

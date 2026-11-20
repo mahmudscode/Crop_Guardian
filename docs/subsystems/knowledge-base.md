@@ -6,7 +6,7 @@ updated: 2026-11-20
 sources:
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: supabase/seed.sql
-verified_at: PLACEHOLDER_SHA
+verified_at: 4d9c993
 ---
 
 # Knowledge base (disease cards: schema, sources, rules)
