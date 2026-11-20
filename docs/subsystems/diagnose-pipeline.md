@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: be5faf0
+verified_at: ea2f585
 ---
 
 # Diagnose pipeline
@@ -33,3 +33,7 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 > ⚠️ `diagnose` has `verify_jwt = false` (`supabase/config.toml`) for the no-account demo, so anyone with the URL can spend API credit. Add rate limiting before a public launch. `embed-cards` is guarded by the `x-admin-key` header instead.
 
 > ⚠️ Gemini free-tier calls can return HTTP 429 when rate limited; `_shared/gemini.ts` retries twice after 15 s. The free tier has request and daily limits (unverified, check Google's page), so rate-limit `diagnose` and avoid stress-testing before the demo.
+
+> ⚠️ Gemini model names change and old ones close to new accounts: `gemini-2.5-flash` returned 404 ("no longer available to new users"), `gemini-3.8-flash` returned 503 under load, `gemini-3.5-flash` worked for image + JSON. List the models your key can use with the `models` endpoint before changing `GEMINI_MODEL`. In zsh write `${model}:generateContent`, because `$model:g` is a history modifier and silently breaks the URL.
+
+> ⚠️ Latency: one refusal call on `gemini-3.5-flash` took about 51 s end to end (first measurement, one call, unverified cause). That would fail the response-time KPI; measure properly and consider a lighter model (`gemini-3.1-flash-lite` also handled image + JSON).

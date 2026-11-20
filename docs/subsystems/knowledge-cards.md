@@ -7,7 +7,7 @@ sources:
   - code: supabase/seed.sql
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - ext: https://apps.lucidcentral.org/pppw_v10/text/web_full/entities/
-verified_at: b52fc69
+verified_at: ea2f585
 ---
 
 # Disease cards
