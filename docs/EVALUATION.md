@@ -23,3 +23,15 @@ Use a public rice leaf disease dataset (Kaggle or Mendeley; some are from Bangla
 - Safe refusal: _ / _
 - Median response time: _ s
 - Worst failure and fix applied: _
+
+## Smoke tests so far (informal, NOT the KPI)
+Labels come from Wikimedia Commons file names (crowd-sourced, unverified); n is tiny. Do not quote these.
+
+| Photo (Commons file) | Label by file name | Result | Confidence |
+|---|---|---|---|
+| Bipolaris oryzae 173160042 | brown spot | Brown spot | 0.75 |
+| Pyricularia oryzae 173066184 | blast | Sheath blight (likely wrong) | 0.85 |
+| Rice Hispa 6282950178 | hispa (no card) | "not sure", refer to officer | n/a |
+| Rice plants affected by tungro disease1 | tungro | "not sure", refer to officer (missed) | n/a |
+| Non-rice stripes image | not rice | "send another photo" | n/a |
+| Corrupt file (UI) | not an image | "image could not be read" | n/a |

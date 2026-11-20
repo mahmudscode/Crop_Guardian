@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { diagnose, prepareImage } from "./api.js";
+import { diagnose, prepareImage, ImageReadError } from "./api.js";
 
 const toBn = (n) => String(n).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
 
@@ -22,20 +22,35 @@ function OfficerCard() {
   );
 }
 
+function Steps({ title, items }) {
+  if (!items?.length) return null;
+  return (
+    <div className="mt-4">
+      <p className="text-lg font-bold text-green-800">{title}</p>
+      <ul className="mt-1 list-disc space-y-1 pl-6 text-lg leading-relaxed">
+        {items.map((t, i) => <li key={i}>{t}</li>)}
+      </ul>
+    </div>
+  );
+}
+
 function Result({ r, onRetry }) {
   if (r.status === "ok") {
+    const sec = r.sections;
+    const symptoms = r.observation?.symptoms_bn;
     return (
       <div className="mt-4 rounded-xl bg-white p-4 shadow">
         <ConfidenceBadge value={r.confidence} />
-        <div className="mt-3 whitespace-pre-wrap text-lg leading-relaxed">{r.answer_bn}</div>
-        {r.observation?.symptoms?.length > 0 && (
-          <div className="mt-4">
-            <p className="font-semibold">যে লক্ষণ দেখা গেছে:</p>
-            <ul className="list-disc pl-6 text-gray-700">
-              {r.observation.symptoms.map((s, i) => <li key={i}>{s}</li>)}
-            </ul>
-          </div>
+        {sec ? (
+          <>
+            <p className="mt-3 text-xl font-bold leading-relaxed">{sec.diagnosis_bn}</p>
+            <Steps title="এখন যা করবেন" items={sec.what_to_do_bn} />
+            <Steps title="প্রতিরোধের উপায়" items={sec.prevention_bn} />
+          </>
+        ) : (
+          <div className="mt-3 whitespace-pre-wrap text-lg leading-relaxed">{r.answer_bn}</div>
         )}
+        {symptoms?.length > 0 && <Steps title="যে লক্ষণ দেখা গেছে" items={symptoms} />}
         <div className="mt-4">
           <p className="font-semibold">উৎস:</p>
           <ul className="list-disc pl-6 text-gray-700">
@@ -44,6 +59,9 @@ function Result({ r, onRetry }) {
             ))}
           </ul>
         </div>
+        <p className="mt-3 rounded-lg bg-green-50 p-3 text-sm text-gray-700">
+          সমস্যা গুরুতর হলে বা নিশ্চিত না হলে স্থানীয় কৃষি কর্মকর্তার সাথে যোগাযোগ করুন।
+        </p>
         <p className="mt-3 text-xs text-gray-500">সময়: {toBn(r.seconds.toFixed(1))} সেকেন্ড</p>
       </div>
     );
@@ -79,9 +97,19 @@ export default function App() {
     setLoading(true);
     setResult(null);
     try {
-      setResult(await diagnose(await prepareImage(file)));
-    } catch {
-      setResult({ status: "error", message_bn: "ইন্টারনেট সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।" });
+      const img = await prepareImage(file);
+      try {
+        setResult(await diagnose(img));
+      } catch {
+        setResult({ status: "error", message_bn: "ইন্টারনেট সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।" });
+      }
+    } catch (e) {
+      setResult({
+        status: "error",
+        message_bn: e instanceof ImageReadError
+          ? "ছবিটি পড়া যায়নি। অনুগ্রহ করে অন্য একটি ছবি বেছে নিন।"
+          : "কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+      });
     } finally {
       setLoading(false);
     }

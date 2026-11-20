@@ -1,9 +1,17 @@
 const URL_BASE = import.meta.env.VITE_SUPABASE_URL;
 const ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+export class ImageReadError extends Error {}
+
 // Downscale to max 1024px and re-encode as JPEG q0.8 to save bandwidth. Returns base64 without prefix.
 export async function prepareImage(file) {
-  const bmp = await createImageBitmap(file);
+  if (!file.type.startsWith("image/")) throw new ImageReadError("not an image");
+  let bmp;
+  try {
+    bmp = await createImageBitmap(file);
+  } catch {
+    throw new ImageReadError("cannot decode image");
+  }
   const scale = Math.min(1, 1024 / Math.max(bmp.width, bmp.height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(bmp.width * scale);

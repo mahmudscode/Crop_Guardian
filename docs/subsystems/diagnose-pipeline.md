@@ -9,7 +9,7 @@ sources:
   - code: supabase/functions/_shared/gemini.ts
   - code: supabase/migrations/20261120000000_disease_cards.sql
   - code: app/src/api.js
-verified_at: aaac22d
+verified_at: HEAD_PLACEHOLDER
 ---
 
 # Diagnose pipeline
@@ -41,3 +41,7 @@ The farmer-facing safeguards are described in the root-level docs (`docs/RESPONS
 > ⚠️ The answer step must return JSON naming ONE card; `diagnose` shows only that card's source and treats an unknown name as `no_card`. Do not go back to dumping every retrieved card's source into the result (it listed unrelated diseases). The answer prompt also forbids changing a statement's subject: the first version garbled a flooding-tolerance sentence.
 
 > ⚠️ The rate limit (10 requests per 10 minutes per IP) is in-memory per function instance, so it is best-effort only and resets on cold start. It protects the free quota, not against a determined attacker. Behind shared mobile networks one IP can be many farmers; raise the limit if that bites.
+
+> ⚠️ Vision candidates are limited to diseases that have a verified, embedded card (`knownCards` in `supabase/functions/diagnose/index.ts`, cached 5 min per instance). Consequences: (1) a disease with no card (hispa) can only ever end in "not sure"; (2) new or newly verified cards appear after the cache expires; (3) the confidence value is the model's own and is poorly calibrated: a field photo labelled blast on Wikimedia came back as sheath blight at 0.85. Do not read it as a probability until tuned on labelled photos (`docs/EVALUATION.md`).
+
+> ⚠️ Test photos need trustworthy labels. The first Wikimedia "Xanthomonas" test image was an 8-panel figure of cabbage, citrus and rice, so the early "correct at 85%" result was meaningless. Wikimedia file names are crowd labels, not expert diagnoses. Use a licensed, expert-labelled dataset for the KPI numbers.
